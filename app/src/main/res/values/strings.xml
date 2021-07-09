@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Blog</string>
+    <string name="register_hint">-------------------------------------------------</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addBlogTextResource">Добавить блог</string>
+    <string name="text_name_hint_resource">Text Name</string>
+    <string name="text_fragment_add_resource">Text</string>
+    <string name="user_name_add_fragment_resource">User Name</string>
+    <string name="clear_database_add_fragmet_resource">Очистить базу данных</string>
+    <string name="save_blog_resource">Сохранить</string>
+</resources>
