@@ -16,10 +16,8 @@ import androidx.fragment.app.Fragment
 
 class AddFragment : Fragment() {
     companion object {
-        lateinit var DbHelper: DataBase
         lateinit var editTextName: EditText
         lateinit var editText: EditText
-        lateinit var editUser: EditText
     }
 
     private lateinit var clearDatabase: Button
@@ -31,13 +29,6 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         editTextName = view.findViewById(R.id.editTextName)
         editText = view.findViewById(R.id.editText)
-        editUser = view.findViewById(R.id.editUser)
-        clearDatabase = view.findViewById(R.id.clearDatabase)
-        clearDatabase.setOnClickListener {
-            val dataBase = DbHelper.writableDatabase
-            dataBase.delete(DataBase.TABLE_BLOGS, null, null);
-            DbHelper.close()
-        }
     }
 
 

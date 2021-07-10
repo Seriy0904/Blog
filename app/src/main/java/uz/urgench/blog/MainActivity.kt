@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btn: Button
@@ -16,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, listFragment(), null).commit()
     }
-
     fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
             getString(R.string.addBlogTextResource) -> {
@@ -35,19 +36,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun putDB() {
+    private fun putDB() {
         if (AddFragment.editTextName.text.toString() != "" &&
-            AddFragment.editText.text.toString() != "" &&
-            AddFragment.editUser.text.toString() != ""
-        ) {
-            val cont = ContentValues()
-            val database = AddFragment.DbHelper.writableDatabase
-            cont.put(DataBase.KEY_TEXT_NAME, AddFragment.editTextName.text.toString())
-            cont.put(DataBase.KEY_TEXT, AddFragment.editText.text.toString())
-            cont.put(DataBase.KEY_USER, AddFragment.editUser.text.toString())
-            database.insert(DataBase.TABLE_BLOGS, null, cont)
-            AddFragment.DbHelper.close()
-            Log.d("MyTag", "Was Writed")
+            AddFragment.editText.text.toString() != "") {
+            val db = Firebase.firestore
+            db.collection("Blog").document(AddFragment.editTextName.text.toString())
+                .set("Text" to AddFragment.editText.text.toString())
+                .addOnSuccessListener { Log.d("MyTag","Successful") }
+                .addOnFailureListener {  Log.d("MyTag","Failed")}
         }
     }
 }
