@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.addBlogTextResource) -> {
                 btn.text = getString(R.string.save_blog_resource)
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, AddFragment(), null).commit()
+                    .add(R.id.fragmentContainerView, AddFragment(), null).commit()
             }
             getString(R.string.save_blog_resource) -> {
                 putDB()

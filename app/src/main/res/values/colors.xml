@@ -10,4 +10,9 @@
     <color name="light_grey">#8f8f8f</color>
     <color name="grey">#4d4d4d</color>
     <color name="red">#e8483c</color>
+    <color name="light_purple">#b078fa</color>
+    <color name="purple">#603896</color>
+    <color name="blue_and_purle">#738ec7</color>
+    <color name="background_main">#4c5ccf</color>
+    <color name="background_for_add_fragment">#6a79eb</color>
 </resources>
