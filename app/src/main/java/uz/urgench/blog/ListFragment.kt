@@ -23,7 +23,7 @@ class ListFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     textNameList.add(document.id)
-                    textList.add(document.get("Text").toString())
+                    textList.add(document.get("second").toString())
                 }
                 blogsList = view.findViewById(R.id.list)
                 blogsList.layoutManager = LinearLayoutManager(activity)
