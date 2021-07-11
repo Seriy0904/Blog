@@ -14,6 +14,7 @@ class ListFragment : Fragment() {
     private val textList: ArrayList<String> = arrayListOf()
     private val textNameList: ArrayList<String> = arrayListOf()
     private val userList: ArrayList<String> = arrayListOf()
+    private val photoUserList: ArrayList<String> = arrayListOf()
     lateinit var blogsList: RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,10 +26,11 @@ class ListFragment : Fragment() {
                     textNameList.add(document.id)
                     textList.add(document.get("Text").toString())
                     userList.add(document.get("UserName").toString())
+                    photoUserList.add(document.get("UserPhoto").toString())
                 }
                 blogsList = view.findViewById(R.id.list)
                 blogsList.layoutManager = LinearLayoutManager(activity)
-                blogsList.adapter = MyItemRecyclerViewAdapter(textNameList, textList,userList)
+                blogsList.adapter = MyItemRecyclerViewAdapter(textNameList, textList,userList,photoUserList)
             }
     }
 

@@ -12,16 +12,17 @@ import com.google.firebase.ktx.Firebase
 
 class LoginSucces : AppCompatActivity() {
     private lateinit var btn: Button
-    lateinit var userName:String
+    private lateinit var userName:String
+    private lateinit var userPhoto:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_succes)
         userName = intent.getStringExtra("userName").toString()
+        userPhoto = intent.getStringExtra("userPhoto").toString()
         btn = findViewById(R.id.addBlog)
         btn.setOnClickListener { addBlogBtn(btn) }
         replaceList(btn)
     }
-
 
     fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
@@ -40,7 +41,6 @@ class LoginSucces : AppCompatActivity() {
             }
         }
     }
-
     fun replaceList(view: View) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
@@ -52,7 +52,8 @@ class LoginSucces : AppCompatActivity() {
             val db = Firebase.firestore
             val hash = hashMapOf<String, Any>(
                 "Text" to editText.text.toString(),
-                "UserName" to userName
+                "UserName" to userName,
+                "UserPhoto" to userPhoto
             )
             db.collection("Blog").document(editTextName.text.toString())
                 .set(hash)

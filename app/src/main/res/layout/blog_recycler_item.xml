@@ -30,16 +30,32 @@
         android:textColor="#ebebeb"
         android:textSize="16sp"
         tools:text="Text" />
-    <TextView
-        android:id="@+id/userText"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="top"
-        android:textColor="#ebebeb"
-        android:textSize="16sp"
-        tools:text="User" />
+        android:layout_below="@id/text">
+
+        <ImageView
+            android:id="@+id/userPhoto"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/userText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="top"
+            android:textColor="#ebebeb"
+            android:textSize="18sp"
+            tools:text="User" />
+    </LinearLayout>
 </RelativeLayout>

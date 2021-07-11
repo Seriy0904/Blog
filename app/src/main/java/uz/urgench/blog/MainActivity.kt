@@ -52,9 +52,10 @@ class MainActivity : AppCompatActivity() {
     }
     private fun updateUI(userInfo: FirebaseUser?){
         if(userInfo!=null){
-            Log.d("TAG", userInfo.photoUrl!!.toString())
             val intent = Intent(this,LoginSucces::class.java)
             intent.putExtra("userName",userInfo.displayName)
+            Log.d("MyTag",userInfo.photoUrl.toString())
+            intent.putExtra("userPhoto",userInfo.photoUrl.toString())
             startActivity(intent)
         }
     }
