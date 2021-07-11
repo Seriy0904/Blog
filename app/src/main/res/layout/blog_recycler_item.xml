@@ -25,12 +25,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textName"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="6dp"
         android:gravity="top"
         android:textColor="#ebebeb"
         android:textSize="16sp"
         tools:text="Text" />
-
-
-
+    <TextView
+        android:id="@+id/userText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="top"
+        android:textColor="#ebebeb"
+        android:textSize="16sp"
+        tools:text="User" />
 </RelativeLayout>

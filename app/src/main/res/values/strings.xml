@@ -9,4 +9,15 @@
     <string name="user_name_add_fragment_resource">User Name</string>
     <string name="clear_database_add_fragmet_resource">Очистить базу данных</string>
     <string name="save_blog_resource">Сохранить</string>
+    <string name="title_activity_login_succes">LoginSucces</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="content_description_registrtion">GOOGLE REGISTRATION</string>
+    <string name="update_list_description">UPDATE LIST</string>
 </resources>

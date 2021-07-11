@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyItemRecyclerViewAdapter(
     private val textNameList: ArrayList<String>,
-    private val textList: ArrayList<String>
+    private val textList: ArrayList<String>,
+    private val userList: ArrayList<String>
 ) :
     RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -22,6 +23,7 @@ class MyItemRecyclerViewAdapter(
         try {
             holder.textName.text = textNameList[position]
             holder.text.text = textList[position]
+            holder.user.text = userList[position]
         } catch (n: NullPointerException) {
         }
     }
@@ -29,8 +31,9 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount() = textNameList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textName: TextView = itemView.findViewById(R.id.textName)
-        var text: TextView = itemView.findViewById(R.id.text)
+        val textName: TextView = itemView.findViewById(R.id.textName)
+        val text: TextView = itemView.findViewById(R.id.text)
+        val user: TextView = itemView.findViewById(R.id.userText)
     }
 
 }
