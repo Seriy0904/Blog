@@ -3,77 +3,78 @@ package uz.urgench.blog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
 class MainActivity : AppCompatActivity() {
-    private lateinit var googleSignInClient:GoogleSignInClient
-    private val RC_SIGN_IN = 154
-    private lateinit var auth: FirebaseAuth
-    private lateinit var reg_btn:ImageButton
+    private lateinit var btn: Button
+    private lateinit var userName: String
+    private lateinit var userPhoto: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        auth = Firebase.auth
+        val auth = Firebase.auth
         val currentUser = auth.currentUser
-        reg_btn = findViewById(R.id.singIn)
-        reg_btn.setOnClickListener{
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent,RC_SIGN_IN) }
         updateUI(currentUser)
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d("TAG", "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                Log.w("TAG", "Google sign in failed", e)
-            }
-        }
-    }
-    private fun updateUI(userInfo: FirebaseUser?){
-        if(userInfo!=null){
-            val intent = Intent(this,LoginSucces::class.java)
-            intent.putExtra("userName",userInfo.displayName)
-            Log.d("MyTag",userInfo.photoUrl.toString())
-            intent.putExtra("userPhoto",userInfo.photoUrl.toString())
-            startActivity(intent)
-        }
-    }
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("TAG", "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("TAG", "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
-            }
+        try{
+            userName = intent.getStringExtra("userName").toString()
+            userPhoto = intent.getStringExtra("userPhoto").toString()
+        }catch (e:Exception){ Toast.makeText(this,"Ошибка регистрации",Toast.LENGTH_LONG)}
+        btn = findViewById(R.id.addBlog)
+        btn.setOnClickListener { addBlogBtn(btn) }
+        replaceList(btn)
     }
 
+    private fun updateUI(userInfo: FirebaseUser?) {
+        if(userInfo!=null) {
+            userPhoto = userInfo.photoUrl.toString()
+            userName = userInfo.displayName.toString()
+        }else startActivity(Intent(this,LoginSucces::class.java))
+    }
+    fun addBlogBtn(v: Button) {
+        when ((v).text.toString()) {
+            getString(R.string.addBlogTextResource) -> {
+                btn.text = getString(R.string.save_blog_resource)
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fragmentContainerView, AddFragment(), null).commit()
+            }
+            getString(R.string.save_blog_resource) -> {
+                btn.text = getString(R.string.addBlogTextResource)
+                putBD()
+                supportFragmentManager.beginTransaction()
+                    .remove(AddFragment())
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+            }
+        }
+    }
+
+    fun replaceList(view: View) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+    }
+
+    fun putBD() {
+        val editText: EditText = findViewById(R.id.editText)
+        val editTextName: EditText = findViewById(R.id.editTextName)
+        if (editTextName.text.toString() != "" && editText.text.toString() != "") {
+            val db = Firebase.firestore
+            val hash = hashMapOf<String, Any>(
+                "Text" to editText.text.toString(),
+                "UserName" to userName,
+                "UserPhoto" to userPhoto
+            )
+            db.collection("Blog").document(editTextName.text.toString())
+                .set(hash)
+                .addOnSuccessListener { Log.d("MyTag", "Successful") }
+                .addOnFailureListener { Log.d("MyTag", "Failed") }
+        }
+    }
 }

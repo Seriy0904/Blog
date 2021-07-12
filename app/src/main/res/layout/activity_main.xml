@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background_main"
-    android:gravity="center"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/singIn"
-        android:layout_marginHorizontal="50dp"
-        style="@style/buttons"
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/common_google_signin_btn_icon_dark"
-        android:contentDescription="@string/content_description_registrtion" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addBlog"
+            style="@style/buttons"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue_and_purle"
+            android:text="@string/addBlogTextResource"
+            android:textColor="#ebebeb"
+            app:cornerRadius="2dp" />
+
+        <ImageButton
+            android:background="@drawable/update_image"
+            android:onClick="replaceList"
+            style="@style/buttons"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:contentDescription="@string/update_list_description" />
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="uz.urgench.blog.AddFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_list_list" />
+
 </LinearLayout>
