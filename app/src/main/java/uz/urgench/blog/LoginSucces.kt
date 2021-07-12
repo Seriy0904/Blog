@@ -54,7 +54,7 @@ class LoginSucces : AppCompatActivity() {
 
     private fun updateUI(userInfo: FirebaseUser?) {
         if (userInfo != null) {
-            val intent = Intent(this, LoginSucces::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("userName", userInfo.displayName)
             Log.d("MyTag", userInfo.photoUrl.toString())
             intent.putExtra("userPhoto", userInfo.photoUrl.toString())

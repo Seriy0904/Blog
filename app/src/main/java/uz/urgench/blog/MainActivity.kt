@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -15,29 +14,30 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btn: Button
-    private lateinit var userName: String
+
+    companion object {
+        lateinit var userName: String
+    }
+
     private lateinit var userPhoto: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val auth = Firebase.auth
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-        try{
-            userName = intent.getStringExtra("userName").toString()
-            userPhoto = intent.getStringExtra("userPhoto").toString()
-        }catch (e:Exception){ Toast.makeText(this,"Ошибка регистрации",Toast.LENGTH_LONG)}
+            val auth = Firebase.auth
+            val currentUser = auth.currentUser
+            updateUI(currentUser)
         btn = findViewById(R.id.addBlog)
         btn.setOnClickListener { addBlogBtn(btn) }
         replaceList(btn)
     }
 
     private fun updateUI(userInfo: FirebaseUser?) {
-        if(userInfo!=null) {
+        if (userInfo != null) {
             userPhoto = userInfo.photoUrl.toString()
             userName = userInfo.displayName.toString()
-        }else startActivity(Intent(this,LoginSucces::class.java))
+        } else startActivity(Intent(this, LoginSucces::class.java))
     }
+
     fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
             getString(R.string.addBlogTextResource) -> {

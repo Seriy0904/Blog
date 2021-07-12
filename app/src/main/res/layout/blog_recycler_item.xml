@@ -30,32 +30,42 @@
         android:textColor="#ebebeb"
         android:textSize="16sp"
         tools:text="Text" />
-
+1
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text">
+        android:layout_below="@id/text"
+        android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userPhoto"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/userText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_below="@id/text"
             android:layout_marginStart="6dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:gravity="top"
             android:textColor="#ebebeb"
             android:textSize="18sp"
             tools:text="User" />
+        <Button
+            android:id="@+id/delete"
+            style="@style/buttons"
+            android:backgroundTint="@color/red"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="8dp"
+            android:text="Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </RelativeLayout>
