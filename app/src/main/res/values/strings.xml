@@ -20,4 +20,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="content_description_registrtion">GOOGLE REGISTRATION</string>
     <string name="update_list_description">UPDATE LIST</string>
+    <string name="delete_blog_description">DELETE BLOG</string>
 </resources>

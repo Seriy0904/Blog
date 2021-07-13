@@ -3,9 +3,9 @@ package uz.urgench.blog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -14,7 +14,7 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btn: Button
-
+    private lateinit var updateBtn:ImageButton
     companion object {
         lateinit var userName: String
     }
@@ -26,9 +26,15 @@ class MainActivity : AppCompatActivity() {
             val auth = Firebase.auth
             val currentUser = auth.currentUser
             updateUI(currentUser)
+        updateBtn = findViewById(R.id.replaceList)
         btn = findViewById(R.id.addBlog)
+        updateBtn.setOnClickListener{replaceList()}
         btn.setOnClickListener { addBlogBtn(btn) }
-        replaceList(btn)
+        replaceList()
+    }
+    fun replaceList() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
     }
 
     private fun updateUI(userInfo: FirebaseUser?) {
@@ -38,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         } else startActivity(Intent(this, LoginSucces::class.java))
     }
 
-    fun addBlogBtn(v: Button) {
+    private fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
             getString(R.string.addBlogTextResource) -> {
                 btn.text = getString(R.string.save_blog_resource)
@@ -56,10 +62,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun replaceList(view: View) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
-    }
 
     fun putBD() {
         val editText: EditText = findViewById(R.id.editText)

@@ -28,9 +28,11 @@
         android:textColorHint="@color/grey" />
 
     <EditText
+        android:gravity="top"
+        android:textSize="20sp"
         android:id="@+id/editText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
         android:autofillHints="Text"

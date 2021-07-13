@@ -27,7 +27,7 @@
 
         <ImageButton
             android:background="@drawable/update_image"
-            android:onClick="replaceList"
+            android:id="@+id/replaceList"
             style="@style/buttons"
             android:layout_width="50sp"
             android:layout_height="50sp"

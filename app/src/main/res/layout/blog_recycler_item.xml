@@ -30,8 +30,9 @@
         android:textColor="#ebebeb"
         android:textSize="16sp"
         tools:text="Text" />
-1
+
     <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/text"
@@ -50,7 +51,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text"
             android:layout_marginStart="6dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
@@ -58,14 +58,13 @@
             android:textColor="#ebebeb"
             android:textSize="18sp"
             tools:text="User" />
-        <Button
+        <ImageButton
+            android:background="@drawable/delete_image"
             android:id="@+id/delete"
             style="@style/buttons"
-            android:backgroundTint="@color/red"
-            android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="8dp"
-            android:text="Delete"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_width="35dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/delete_blog_description" />
     </LinearLayout>
 </RelativeLayout>

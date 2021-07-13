@@ -16,7 +16,6 @@ class ListFragment : Fragment() {
     private val userList: ArrayList<String> = arrayListOf()
     private val photoUserList: ArrayList<String> = arrayListOf()
     lateinit var blogsList: RecyclerView
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val db = Firebase.firestore
