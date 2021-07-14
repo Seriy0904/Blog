@@ -13,6 +13,7 @@
     tools:context=".AddFragment">
 
     <EditText
+        android:maxLength="20"
         android:gravity="top"
         android:id="@+id/editTextName"
         android:layout_width="match_parent"

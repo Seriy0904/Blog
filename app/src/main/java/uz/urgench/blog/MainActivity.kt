@@ -1,10 +1,12 @@
 package uz.urgench.blog
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.save_blog_resource) -> {
                 btn.text = getString(R.string.next_add_resource)
                 supportFragmentManager.beginTransaction()
-                    .remove(AddTextDetalis())
+                    .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
                 supportFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainerView, AddFragment(), null).commit()
             }
@@ -87,9 +89,12 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     btn.text = getString(R.string.save_blog_resource)
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
-                    supportFragmentManager.beginTransaction()
                         .remove(AddFragment()).commit()
+                    val imm: InputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(window.currentFocus!!.windowToken, 0)
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
                 } else {
                     btn.text = getString(R.string.next_add_resource)
                     supportFragmentManager.beginTransaction()
@@ -103,6 +108,8 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                     .remove(AddFragment())
                 supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
             }
         }
@@ -112,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         val editText: EditText = findViewById(R.id.editText)
         val editTextName: EditText = findViewById(R.id.editTextName)
 
-        if (findViewById<ImageView>(R.id.uploadImage).visibility == View.VISIBLE) {
+        if (findViewById<ImageView>(R.id.uploadImage).visibility!=null&&findViewById<ImageView>(R.id.uploadImage).visibility == View.VISIBLE) {
             val baos = ByteArrayOutputStream()
             findViewById<ImageView>(R.id.uploadImage).drawable.toBitmap()
                 .compress(Bitmap.CompressFormat.JPEG, 90, baos)
@@ -126,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             db.collection("Blog").document(editTextName.text.toString())
                 .get()
                 .addOnSuccessListener {
-                    if (it == null) {
+                    if (it.data == null) {
                         val hash = hashMapOf<String, Any>(
                             "Text" to editText.text.toString(),
                             "UserName" to userName,
@@ -136,11 +143,12 @@ class MainActivity : AppCompatActivity() {
                             .set(hash)
                             .addOnSuccessListener { Log.d("MyTag", "Successful") }
                             .addOnFailureListener { Log.d("MyTag", "Failed") }
-                    } else Toast.makeText(
+                    } else {Toast.makeText(
                         this,
                         "Запись с таким именем уже существет",
                         Toast.LENGTH_LONG
                     ).show()
+                    Log.d("MyTag","$it")}
                 }
 
         }
