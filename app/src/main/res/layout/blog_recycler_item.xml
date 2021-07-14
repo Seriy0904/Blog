@@ -4,10 +4,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="5dp"
-    android:layout_marginTop="4dp"
+    android:gravity="start"
+    android:layout_gravity="start"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
     android:background="@drawable/blog_recycler_item_drawable">
 
     <TextView
+        android:maxLength="20"
         android:id="@+id/textName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,12 +34,18 @@
         android:textColor="#ebebeb"
         android:textSize="16sp"
         tools:text="Text" />
-
+    <ImageView
+        android:visibility="gone"
+        android:layout_marginHorizontal="16dp"
+        android:id="@+id/imageItem"
+        android:layout_below="@id/text"
+        android:layout_width="100dp"
+        android:layout_height="150dp"/>
     <LinearLayout
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text"
+        android:layout_below="@id/imageItem"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView

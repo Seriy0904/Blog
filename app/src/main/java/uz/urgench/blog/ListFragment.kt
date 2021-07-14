@@ -29,7 +29,11 @@ class ListFragment : Fragment() {
                 }
                 blogsList = view.findViewById(R.id.list)
                 blogsList.layoutManager = LinearLayoutManager(activity)
-                blogsList.adapter = MyItemRecyclerViewAdapter(textNameList, textList,userList,photoUserList)
+                blogsList.adapter = activity?.let {
+                    MyItemRecyclerViewAdapter(textNameList, textList,userList,photoUserList,
+                        it
+                    )
+                }
             }
     }
 

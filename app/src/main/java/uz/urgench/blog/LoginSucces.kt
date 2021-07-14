@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import uz.urgench.blog.MainActivity
 
 class LoginSucces : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
