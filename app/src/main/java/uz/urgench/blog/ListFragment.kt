@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class ListFragment : Fragment() {
     private val textList: ArrayList<String> = arrayListOf()
     private val textNameList: ArrayList<String> = arrayListOf()
     private val userList: ArrayList<String> = arrayListOf()
     private val photoUserList: ArrayList<String> = arrayListOf()
+    private val dateList: ArrayList<Timestamp> = arrayListOf()
     lateinit var blogsList: RecyclerView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,14 +29,11 @@ class ListFragment : Fragment() {
                     textList.add(document.get("Text").toString())
                     userList.add(document.get("UserName").toString())
                     photoUserList.add(document.get("UserPhoto").toString())
+                    dateList.add(document.get("Date") as Timestamp)
                 }
                 blogsList = view.findViewById(R.id.list)
                 blogsList.layoutManager = LinearLayoutManager(activity)
-                blogsList.adapter = activity?.let {
-                    MyItemRecyclerViewAdapter(textNameList, textList,userList,photoUserList,
-                        it
-                    )
-                }
+                blogsList.adapter = MyItemRecyclerViewAdapter(textNameList, textList,userList,photoUserList,dateList)
             }
     }
 

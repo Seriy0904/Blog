@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             userEmail = userInfo.email.toString()
         } else startActivity(Intent(this, LoginSucces::class.java))
     }
-
     private fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
             getString(R.string.addBlogTextResource) -> {
@@ -130,6 +130,9 @@ class MainActivity : AppCompatActivity() {
         }
         if (editTextName.text.toString() != "" && editText.text.toString() != "") {
             val db = Firebase.firestore
+            val ymdhm = GregorianCalendar(TimeZone.getTimeZone("gmt"))
+//            val hm = String.format("%02d:%02d",df.get(Calendar.HOUR_OF_DAY),df.get(Calendar.MINUTE))
+//            val ymd = String.format("%04d/%02d/%02d",df.get(Calendar.YEAR),df.get(Calendar.MONTH),df.get(Calendar.DAY_OF_MONTH))
             db.collection("Blog").document(editTextName.text.toString())
                 .get()
                 .addOnSuccessListener {
@@ -137,7 +140,8 @@ class MainActivity : AppCompatActivity() {
                         val hash = hashMapOf<String, Any>(
                             "Text" to editText.text.toString(),
                             "UserName" to userName,
-                            "UserPhoto" to userPhoto
+                            "UserPhoto" to userPhoto,
+                            "Date" to ymdhm.time,
                         )
                         db.collection("Blog").document(editTextName.text.toString())
                             .set(hash)
