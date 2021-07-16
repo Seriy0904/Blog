@@ -11,11 +11,11 @@
     android:gravity="start">
 
     <LinearLayout
-        android:gravity="end"
         android:id="@+id/blogInfo"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textName"
@@ -34,7 +34,6 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textName"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="6dp"
             android:ellipsize="end"
@@ -44,21 +43,23 @@
             android:textColor="#ebebeb"
             android:textSize="16sp"
             tools:text="Text" />
+
         <ImageView
             android:id="@+id/imageItem"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
-            android:layout_below="@id/blogInfo"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
             android:layout_marginHorizontal="16dp"
-            android:visibility="gone" />
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:contentDescription="IMAGE" />
+
         <TextView
             android:id="@+id/date"
-            android:layout_marginEnd="25dp"
-            android:textColor="@color/light_grey"
-            android:layout_marginVertical="2dp"
-            tools:text="2021/06/15 16:06"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginEnd="25dp"
+            android:textColor="@color/black"
+            tools:text="2021/06/15 16:06" />
     </LinearLayout>
 
     <LinearLayout

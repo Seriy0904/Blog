@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -33,7 +34,6 @@ class MyItemRecyclerViewAdapter(
         )
 
     private val db = Firebase.firestore
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             if (userList[position] != MainActivity.userName && MainActivity.userEmail != "sirojiddin.nuraddinov@gmail.com")
@@ -59,21 +59,21 @@ class MyItemRecyclerViewAdapter(
             holder.user.text = userList[position]
             holder.text.text = textList[position]
             val dL = dateList[position].toDate()
-            holder.date.text = holder.date.context.getString(R.string.date,1900+dL.year,dL.month,dL.day,dL.hours,dL.minutes)
+            holder.date.text = holder.date.context.getString(R.string.date,1900+dL.year,dL.month+1,dL.date,dL.hours,dL.minutes)
             Firebase.storage.reference.child("chatFiles/${textNameList[position]}").downloadUrl.addOnSuccessListener {
                 holder.imageItem.visibility = View.VISIBLE
                 Picasso.get().load(it).into(holder.imageItem)
             }.addOnFailureListener { }
-            Picasso.get().load(photoUserList[position]).into(holder.photoUser)
+            Glide.with(holder.photoUser.context).load(photoUserList[position]).centerCrop().into(holder.photoUser)
         } catch (n: NullPointerException) {
             Log.d("MyTag", "$n")
         }
     }
 
     fun startactivity(holder: ViewHolder, position: Int) {
-        val intent = Intent(holder.textName.context, BlogSelected()::class.java)
-        intent.putExtra("BlogName", textNameList[position])
-        holder.textName.context.startActivity(intent)
+            val intent = Intent(holder.textName.context, BlogSelected()::class.java)
+            intent.putExtra("BlogName", textNameList[position])
+            holder.textName.context.startActivity(intent)
     }
 
     override fun getItemCount() = textNameList.size

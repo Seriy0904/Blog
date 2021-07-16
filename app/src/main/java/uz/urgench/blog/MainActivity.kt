@@ -1,15 +1,18 @@
 package uz.urgench.blog
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -22,7 +25,9 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var btn: Button
     private lateinit var updateBtn: ImageButton
-
+    private lateinit var editText:EditText
+    private lateinit var editTextName:EditText
+    private val auth = Firebase.auth
     companion object {
         lateinit var userName: String
         lateinit var userEmail: String
@@ -32,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val auth = Firebase.auth
         val currentUser = auth.currentUser
         updateUI(currentUser)
         updateBtn = findViewById(R.id.replaceList)
@@ -62,7 +66,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun replaceList() {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.exit_account -> {
+                FirebaseAuth.getInstance().signOut()
+                GoogleSignIn.getClient(this, GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut()
+                startActivity(Intent(this, LoginSucces::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun replaceList() {
         btn.text = getString(R.string.addBlogTextResource)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
@@ -75,12 +95,13 @@ class MainActivity : AppCompatActivity() {
             userEmail = userInfo.email.toString()
         } else startActivity(Intent(this, LoginSucces::class.java))
     }
+
     private fun addBlogBtn(v: Button) {
         when ((v).text.toString()) {
             getString(R.string.addBlogTextResource) -> {
-                btn.text = getString(R.string.next_add_resource)
                 supportFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainerView, AddFragment(), null).commit()
+                btn.text = getString(R.string.next_add_resource)
             }
             getString(R.string.next_add_resource) -> {
                 if (findViewById<EditText>(
@@ -90,15 +111,12 @@ class MainActivity : AppCompatActivity() {
                     btn.text = getString(R.string.save_blog_resource)
                     supportFragmentManager.beginTransaction()
                         .remove(AddFragment()).commit()
-                    val imm: InputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(window.currentFocus!!.windowToken, 0)
                     supportFragmentManager.beginTransaction()
                         .add(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
                 } else {
-                    btn.text = getString(R.string.next_add_resource)
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fragmentContainerView, AddFragment(), null).commit()
+                        .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+                    btn.text = getString(R.string.addBlogTextResource)
                     Toast.makeText(this, "Сначала введите название", Toast.LENGTH_LONG).show()
                 }
             }
@@ -115,14 +133,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun putBD() {
-        val editText: EditText = findViewById(R.id.editText)
-        val editTextName: EditText = findViewById(R.id.editTextName)
-
-        if (findViewById<ImageView>(R.id.uploadImage).visibility!=null&&findViewById<ImageView>(R.id.uploadImage).visibility == View.VISIBLE) {
+    private fun putBD() {
+        editText= findViewById(R.id.editText)
+        editTextName= findViewById(R.id.editTextName)
+        if (findViewById<ImageView>(
+                R.id.uploadImage
+            ).visibility == View.VISIBLE
+        ) {
             val baos = ByteArrayOutputStream()
             findViewById<ImageView>(R.id.uploadImage).drawable.toBitmap()
-                .compress(Bitmap.CompressFormat.JPEG, 90, baos)
+                .compress(Bitmap.CompressFormat.JPEG, 85, baos)
             val byteArray = baos.toByteArray()
             val storage = Firebase.storage.reference
             storage.child("chatFiles/" + findViewById<EditText>(R.id.editTextName).text.toString())
@@ -131,12 +151,10 @@ class MainActivity : AppCompatActivity() {
         if (editTextName.text.toString() != "" && editText.text.toString() != "") {
             val db = Firebase.firestore
             val ymdhm = GregorianCalendar(TimeZone.getTimeZone("gmt"))
-//            val hm = String.format("%02d:%02d",df.get(Calendar.HOUR_OF_DAY),df.get(Calendar.MINUTE))
-//            val ymd = String.format("%04d/%02d/%02d",df.get(Calendar.YEAR),df.get(Calendar.MONTH),df.get(Calendar.DAY_OF_MONTH))
             db.collection("Blog").document(editTextName.text.toString())
                 .get()
-                .addOnSuccessListener {
-                    if (it.data == null) {
+                .addOnSuccessListener {data->
+                    if (data["Text"] == null) {
                         val hash = hashMapOf<String, Any>(
                             "Text" to editText.text.toString(),
                             "UserName" to userName,
@@ -145,14 +163,16 @@ class MainActivity : AppCompatActivity() {
                         )
                         db.collection("Blog").document(editTextName.text.toString())
                             .set(hash)
-                            .addOnSuccessListener { Log.d("MyTag", "Successful") }
+                            .addOnSuccessListener { Log.d("MyTag", "Successful Upload ${data.data}") }
                             .addOnFailureListener { Log.d("MyTag", "Failed") }
-                    } else {Toast.makeText(
-                        this,
-                        "Запись с таким именем уже существет",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.d("MyTag","$it")}
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Запись с таким именем уже существет",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.d("MyTag", "$data")
+                    }
                 }
 
         }

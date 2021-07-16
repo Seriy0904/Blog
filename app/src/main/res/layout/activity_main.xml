@@ -6,7 +6,6 @@
     android:layout_height="fill_parent"
     android:background="@color/background_main"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_marginStart="7dp"

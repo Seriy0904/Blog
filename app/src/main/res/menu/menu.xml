@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/exit_account"
+        android:orderInCategory="1"
+        android:title="Выйти из аккаунта" />
+    <item
+        android:id="@+id/profile"
+        app:showAsAction="always"
+        android:icon="@drawable/update_image"
+        android:title="Обновить"/>
+</menu>
