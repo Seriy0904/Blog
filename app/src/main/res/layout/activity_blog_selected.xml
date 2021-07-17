@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/blog_recycler_item_drawable"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/blog_recycler_item_drawable"
+    tools:context=".BlogSelected">
 
     <LinearLayout
-        android:scrollbarSize="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbarSize="0dp">
 
         <TextView
-            android:layout_marginVertical="6dp"
-            android:layout_marginHorizontal="3dp"
-            android:textSize="22sp"
             android:id="@+id/textNameInBlog"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="6dp"
+            android:textSize="22sp" />
 
         <TextView
-            android:layout_marginVertical="6dp"
-            android:layout_marginHorizontal="3dp"
-            android:textSize="18sp"
             android:id="@+id/textInBlog"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="6dp"
+            android:textSize="18sp" />
 
         <ImageView
-            android:layout_marginHorizontal="3dp"
             android:id="@+id/imageInBlog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
             android:contentDescription="IMAGE" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userPhotoInBlog"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginStart="6dp"
+                android:contentDescription="IMAGE" />
+
+            <TextView
+                android:id="@+id/userNameInBlog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="12dp"
+                android:textSize="26sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

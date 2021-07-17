@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
@@ -17,6 +18,7 @@ class AddTextDetalis : Fragment() {
     private lateinit var uploadImage: ImageView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<LinearLayout>(R.id.addDetalisWindow).elevation = 110F
         uploadImage = view.findViewById(R.id.uploadImage)
         view.findViewById<ImageButton>(R.id.add_image).setOnClickListener {
             val intent = Intent()

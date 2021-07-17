@@ -7,7 +7,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,7 +27,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btn: Button
-    private lateinit var updateBtn: ImageButton
     private lateinit var editText:EditText
     private lateinit var editTextName:EditText
     private val auth = Firebase.auth
@@ -39,9 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val currentUser = auth.currentUser
         updateUI(currentUser)
-        updateBtn = findViewById(R.id.replaceList)
         btn = findViewById(R.id.addBlog)
-        updateBtn.setOnClickListener { replaceList() }
         btn.setOnClickListener { addBlogBtn(btn) }
         replaceList()
     }
@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                 GoogleSignIn.getClient(this, GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut()
                 startActivity(Intent(this, LoginSucces::class.java))
             }
+            R.id.replaceList -> replaceList()
         }
         return super.onOptionsItemSelected(item)
     }

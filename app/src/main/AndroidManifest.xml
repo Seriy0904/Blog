@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Blog">
-        <activity android:name=".BlogSelected"></activity>
+        <activity android:name=".BlogSelected" />
         <activity
             android:name=".LoginSucces"
             android:label="@string/title_activity_login_succes"

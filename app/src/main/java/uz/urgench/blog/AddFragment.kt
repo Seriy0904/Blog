@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
@@ -16,6 +17,7 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editTextName= view.findViewById(R.id.editTextName)
+        view.findViewById<LinearLayout>(R.id.addBlogWindow).elevation = 100F
         editTextName.setOnEditorActionListener { v, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 if (view.findViewById<EditText>(R.id.editTextName).text.toString() != "") {

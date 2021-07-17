@@ -16,7 +16,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.squareup.picasso.Picasso
 import java.util.*
 
 class MyItemRecyclerViewAdapter(
@@ -62,7 +61,7 @@ class MyItemRecyclerViewAdapter(
             holder.date.text = holder.date.context.getString(R.string.date,1900+dL.year,dL.month+1,dL.date,dL.hours,dL.minutes)
             Firebase.storage.reference.child("chatFiles/${textNameList[position]}").downloadUrl.addOnSuccessListener {
                 holder.imageItem.visibility = View.VISIBLE
-                Picasso.get().load(it).into(holder.imageItem)
+                Glide.with(holder.imageItem.context).load(it).into(holder.imageItem)
             }.addOnFailureListener { }
             Glide.with(holder.photoUser.context).load(photoUserList[position]).centerCrop().into(holder.photoUser)
         } catch (n: NullPointerException) {

@@ -6,7 +6,7 @@
         android:orderInCategory="1"
         android:title="Выйти из аккаунта" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/replaceList"
         app:showAsAction="always"
         android:icon="@drawable/update_image"
         android:title="Обновить"/>

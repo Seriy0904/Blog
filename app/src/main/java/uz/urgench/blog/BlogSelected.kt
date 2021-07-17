@@ -3,6 +3,7 @@ package uz.urgench.blog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,19 +16,26 @@ class BlogSelected : AppCompatActivity() {
     private lateinit var textName:TextView
     private lateinit var text:TextView
     private lateinit var image:ImageView
+    private lateinit var userPhoto:ImageView
+    private lateinit var userName:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blog_selected)
-        actionBar?.setDisplayShowTitleEnabled(false)
         textName = findViewById(R.id.textNameInBlog)
         text = findViewById(R.id.textInBlog)
         image = findViewById(R.id.imageInBlog)
+        userPhoto = findViewById(R.id.userPhotoInBlog)
+        userName = findViewById(R.id.userNameInBlog)
         val fdb = Firebase.firestore
         val getExtra = intent.getStringExtra("BlogName")
+        supportActionBar?.subtitle = getExtra
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         fdb.collection("Blog").document("$getExtra")
             .get()
             .addOnSuccessListener { doc->
                 text.text = doc["Text"].toString()
+                Glide.with(userPhoto.context).load(doc["UserPhoto"]).into(userPhoto)
+                userName.text = doc["UserName"].toString()
                 textName.text = getExtra
             }
         var uri: Uri? = null
@@ -41,4 +49,12 @@ class BlogSelected : AppCompatActivity() {
             startActivity(gallery)
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            android.R.id.home -> super.onBackPressed()
+        }
+        return true
+    }
+
 }

@@ -5,39 +5,28 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background_main"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="7dp"
-        android:layout_width="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/addBlog"
+        style="@style/buttons"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/addBlog"
-            style="@style/buttons"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue_and_purle"
-            android:text="@string/addBlogTextResource"
-            android:textColor="#ebebeb"
-            app:cornerRadius="2dp" />
-
-        <ImageButton
-            android:background="@drawable/update_image"
-            android:id="@+id/replaceList"
-            style="@style/buttons"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:contentDescription="@string/update_list_description" />
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="7dp"
+        android:layout_marginVertical="3dp"
+        android:backgroundTint="@color/blue_and_purle"
+        android:text="@string/addBlogTextResource"
+        android:textColor="#ebebeb"
+        app:cornerRadius="2dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="uz.urgench.blog.AddFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_list_list" />
+        tools:layout="@layout/fragment_list_list"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"/>
 
 </LinearLayout>
