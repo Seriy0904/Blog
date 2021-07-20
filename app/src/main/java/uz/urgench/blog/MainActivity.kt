@@ -1,181 +1,101 @@
 package uz.urgench.blog
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import java.io.ByteArrayOutputStream
-import java.util.*
+import uz.urgench.blog.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var btn: Button
-    private lateinit var editText:EditText
-    private lateinit var editTextName:EditText
-    private val auth = Firebase.auth
-    companion object {
-        lateinit var userName: String
-        lateinit var userEmail: String
-    }
-
-    private lateinit var userPhoto: String
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var binding: ActivityMainBinding
+    private var onFragment: Short = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-        btn = findViewById(R.id.addBlog)
-        btn.setOnClickListener { addBlogBtn(btn) }
-        replaceList()
+        if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.mainBar)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.mainBar,
+            R.string.drawer_navigation_open,
+            R.string.navigation_drawer_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        findViewById<NavigationView>(R.id.nav_view).setNavigationItemSelectedListener(this)
+        val navigationDrawer: View = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
+        navigationDrawer.findViewById<TextView>(R.id.header_title_username).text =
+            Firebase.auth.currentUser?.displayName
+        navigationDrawer.findViewById<TextView>(R.id.header_title_email).text =
+            Firebase.auth.currentUser?.email
+        Glide.with(this).load(Firebase.auth.currentUser?.photoUrl)
+            .into(navigationDrawer.findViewById(R.id.account_photo))
+        toggle.syncState()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+        findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
+        onFragment = 1
     }
 
     override fun onBackPressed() {
-        when (findViewById<Button>(R.id.addBlog).text.toString()) {
-            getString(R.string.addBlogTextResource) -> {
-                finish()
-            }
-            getString(R.string.next_add_resource) -> {
-                btn.text = getString(R.string.addBlogTextResource)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
-            }
-            getString(R.string.save_blog_resource) -> {
-                btn.text = getString(R.string.next_add_resource)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainerView, AddFragment(), null).commit()
-            }
-        }
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else if (onFragment==(2).toShort()){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+            onFragment = 1
+            findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
+        }else super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+        if(onFragment==(2).toShort()){
+            menu?.findItem(R.id.replaceList)?.isVisible = false
+        }else if(onFragment==(1).toShort())
+            menu?.findItem(R.id.replaceList)?.isVisible = true
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.exit_account -> {
-                FirebaseAuth.getInstance().signOut()
-                GoogleSignIn.getClient(this, GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut()
-                startActivity(Intent(this, LoginSucces::class.java))
-            }
-            R.id.replaceList -> replaceList()
+            R.id.replaceList -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun replaceList() {
-        btn.text = getString(R.string.addBlogTextResource)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
-    }
-
-    private fun updateUI(userInfo: FirebaseUser?) {
-        if (userInfo != null) {
-            userPhoto = userInfo.photoUrl.toString()
-            userName = userInfo.displayName.toString()
-            userEmail = userInfo.email.toString()
-        } else startActivity(Intent(this, LoginSucces::class.java))
-    }
-
-    private fun addBlogBtn(v: Button) {
-        when ((v).text.toString()) {
-            getString(R.string.addBlogTextResource) -> {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainerView, AddFragment(), null).commit()
-                btn.text = getString(R.string.next_add_resource)
-            }
-            getString(R.string.next_add_resource) -> {
-                if (findViewById<EditText>(
-                        R.id.editTextName
-                    ).text.toString() != ""
-                ) {
-                    btn.text = getString(R.string.save_blog_resource)
-                    supportFragmentManager.beginTransaction()
-                        .remove(AddFragment()).commit()
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
-                } else {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home ->
+                if (onFragment != (1).toShort()) {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
-                    btn.text = getString(R.string.addBlogTextResource)
-                    Toast.makeText(this, "Сначала введите название", Toast.LENGTH_LONG).show()
+                    onFragment = 1
+                    invalidateOptionsMenu()
                 }
-            }
-            getString(R.string.save_blog_resource) -> {
-                btn.text = getString(R.string.addBlogTextResource)
-                putBD()
-                supportFragmentManager.beginTransaction()
-                    .remove(AddFragment())
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, AddTextDetalis(), null).commit()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+            R.id.nav_profile -> {
+                if (onFragment != (2).toShort())
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView, ProfileFragment(), null).commit()
+                onFragment = 2
+                invalidateOptionsMenu()
             }
         }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 
-    private fun putBD() {
-        editText= findViewById(R.id.editText)
-        editTextName= findViewById(R.id.editTextName)
-        if (findViewById<ImageView>(
-                R.id.uploadImage
-            ).visibility == View.VISIBLE
-        ) {
-            val baos = ByteArrayOutputStream()
-            findViewById<ImageView>(R.id.uploadImage).drawable.toBitmap()
-                .compress(Bitmap.CompressFormat.JPEG, 85, baos)
-            val byteArray = baos.toByteArray()
-            val storage = Firebase.storage.reference
-            storage.child("chatFiles/" + findViewById<EditText>(R.id.editTextName).text.toString())
-                .putBytes(byteArray)
-        }
-        if (editTextName.text.toString() != "" && editText.text.toString() != "") {
-            val db = Firebase.firestore
-            val ymdhm = GregorianCalendar(TimeZone.getTimeZone("gmt"))
-            db.collection("Blog").document(editTextName.text.toString())
-                .get()
-                .addOnSuccessListener {data->
-                    if (data["Text"] == null) {
-                        val hash = hashMapOf<String, Any>(
-                            "Text" to editText.text.toString(),
-                            "UserName" to userName,
-                            "UserPhoto" to userPhoto,
-                            "Date" to ymdhm.time,
-                        )
-                        db.collection("Blog").document(editTextName.text.toString())
-                            .set(hash)
-                            .addOnSuccessListener { Log.d("MyTag", "Successful Upload ${data.data}") }
-                            .addOnFailureListener { Log.d("MyTag", "Failed") }
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Запись с таким именем уже существет",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Log.d("MyTag", "$data")
-                    }
-                }
-
-        }
-    }
 }

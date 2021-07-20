@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import uz.urgench.blog.MainActivity
 
 class LoginSucces : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -41,8 +41,9 @@ class LoginSucces : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Toast.makeText(this,"Сначала войдите",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Сначала войдите", Toast.LENGTH_SHORT).show()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -57,10 +58,18 @@ class LoginSucces : AppCompatActivity() {
 
     private fun updateUI(userInfo: FirebaseUser?) {
         if (userInfo != null) {
+            val map = hashMapOf<String,Any>("CustomName" to userInfo.displayName!!)
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("userName", userInfo.displayName)
-            Log.d("MyTag", userInfo.photoUrl.toString())
-            intent.putExtra("userPhoto", userInfo.photoUrl.toString())
+            Firebase.firestore.collection("Accounts")
+                .document(userInfo.email!!)
+                .get().addOnSuccessListener {
+                    if(it["CustomName"]==null){
+                        Firebase.firestore.collection("Accounts")
+                            .document(userInfo.email!!)
+                            .set(map)
+                    }
+                }
+
             startActivity(intent)
         }
     }

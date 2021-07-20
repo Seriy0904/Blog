@@ -9,10 +9,17 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#8f8f8f</color>
     <color name="grey">#4d4d4d</color>
-    <color name="red">#e8483c</color>
+    <color name="red">#e63c4d</color>
+    <color name="blue_and_purle_light">#9b74ed</color>
     <color name="light_purple">#b078fa</color>
     <color name="purple">#603896</color>
+<!--    Два основных цвета-->
     <color name="blue_and_purle">#7546D7</color>
     <color name="background_main">#4512AE</color>
+
+<!--    Два основны цвета второй темы-->
+    <color name="blue_and_purle_two">#7546D7</color>
+    <color name="background_main_two">#4512AE</color>
+
     <color name="background_for_add_fragment">#6a79eb</color>
 </resources>

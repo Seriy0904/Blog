@@ -12,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Blog">
+        <activity android:name=".AddBlogActivity"></activity>
         <activity android:name=".BlogSelected" />
         <activity
             android:name=".LoginSucces"
             android:label="@string/title_activity_login_succes"
             android:theme="@style/Theme.Blog.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.Blog.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

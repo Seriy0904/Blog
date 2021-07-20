@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:background="@drawable/side_nav_bar"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        <ImageButton
+            android:id="@+id/save_name"
+            android:visibility="gone"
+            android:background="@drawable/save_blog"
+            android:layout_gravity="end"
+            android:layout_width="50sp"
+            android:layout_height="50sp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/account_photo_profile"
+            android:layout_width="80sp"
+            android:layout_height="80sp"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing" />
+
+        <EditText
+            android:textColor="@color/white"
+            android:layout_marginEnd="220dp"
+            android:id="@+id/header_title_username_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/header_title_email_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_header_subtitle" />
+    </LinearLayout>
+
+    <Button
+        android:textColor="@color/white"
+        android:id="@+id/exit_account"
+        style="@style/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/light_grey"
+        android:drawableRight="@drawable/exit_icon"
+        android:gravity="start|center_vertical"
+        android:text="Выйти из аккаунта"
+        android:textAppearance="@style/ThemeOverlay.AppCompat.Light"
+        android:textSize="18sp" />
+</LinearLayout>

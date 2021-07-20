@@ -7,7 +7,9 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    android:background="@drawable/blog_recycler_item_drawable"
+    android:id="@+id/main_item"
+    android:elevation="3dp"
+    android:background="@color/blue_and_purle"
     android:gravity="start">
 
     <LinearLayout
@@ -92,14 +94,5 @@
             android:textColor="#ebebeb"
             android:textSize="18sp"
             tools:text="User" />
-
-        <ImageButton
-            android:id="@+id/delete"
-            style="@style/buttons"
-            android:layout_width="35dp"
-            android:layout_height="36dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/delete_image"
-            android:contentDescription="@string/delete_blog_description" />
     </LinearLayout>
 </RelativeLayout>

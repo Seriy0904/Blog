@@ -8,19 +8,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class BlogSelected : AppCompatActivity() {
-    private lateinit var textName:TextView
-    private lateinit var text:TextView
-    private lateinit var image:ImageView
-    private lateinit var userPhoto:ImageView
-    private lateinit var userName:TextView
+    private lateinit var textName: TextView
+    private lateinit var text: TextView
+    private lateinit var image: ImageView
+    private lateinit var userPhoto: ImageView
+    private lateinit var userName: TextView
+    private lateinit var email: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blog_selected)
+        email = findViewById(R.id.emailInBlog)
         textName = findViewById(R.id.textNameInBlog)
         text = findViewById(R.id.textInBlog)
         image = findViewById(R.id.imageInBlog)
@@ -32,11 +35,15 @@ class BlogSelected : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         fdb.collection("Blog").document("$getExtra")
             .get()
-            .addOnSuccessListener { doc->
+            .addOnSuccessListener { doc ->
+                email.text = doc["UserName"].toString()
                 text.text = doc["Text"].toString()
                 Glide.with(userPhoto.context).load(doc["UserPhoto"]).into(userPhoto)
-                userName.text = doc["UserName"].toString()
                 textName.text = getExtra
+            }
+        fdb.collection("Accounts").document(Firebase.auth.currentUser?.email.toString())
+            .get().addOnSuccessListener {
+                userName.text = it["CustomName"].toString()
             }
         var uri: Uri? = null
         Firebase.storage.reference.child("chatFiles/$getExtra").downloadUrl.addOnSuccessListener {
@@ -51,7 +58,7 @@ class BlogSelected : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             android.R.id.home -> super.onBackPressed()
         }
         return true

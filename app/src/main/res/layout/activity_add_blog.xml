@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_and_purle"
+    tools:context=".AddBlogActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <EditText
+                android:inputType="textCapSentences"
+                android:id="@+id/editTextName"
+                android:layout_width="0dp"
+                android:layout_height="38sp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_drawable"
+                android:hint="@string/text_name_hint_resource"
+                android:paddingStart="6dp"
+                android:textSize="22sp" />
+
+            <ImageButton
+                android:id="@+id/saveBlog"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/save_blog" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edit_text_drawable"
+            android:gravity="top"
+            android:hint="@string/text_fragment_add_resource"
+            android:inputType="textCapSentences|textMultiLine"
+            android:paddingStart="6dp"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/uploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/textDetalis"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0.9"
+            android:background="@drawable/ic_menu_gallery" />
+    </LinearLayout>
+</ScrollView>
