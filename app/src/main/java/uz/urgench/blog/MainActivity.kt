@@ -15,21 +15,20 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import uz.urgench.blog.databinding.ActivityMainBinding
 
-
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var binding: ActivityMainBinding
-    private var onFragment: Short = 0
+    private var onFragment: Short = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.mainBar)
+        setSupportActionBar(binding.mainBar.mainBar)
         val toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,
-            binding.mainBar,
+            binding.mainBar.mainBar,
             R.string.drawer_navigation_open,
             R.string.navigation_drawer_close
         )
@@ -46,25 +45,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
         findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
-        onFragment = 1
     }
 
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else if (onFragment==(2).toShort()){
+        } else if (onFragment == (2).toShort()) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
             onFragment = 1
             findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
-        }else super.onBackPressed()
+        } else super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        if(onFragment==(2).toShort()){
+        if (onFragment == (2).toShort()) {
             menu?.findItem(R.id.replaceList)?.isVisible = false
-        }else if(onFragment==(1).toShort())
+        } else if (onFragment == (1).toShort())
             menu?.findItem(R.id.replaceList)?.isVisible = true
         return true
     }
@@ -97,5 +95,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 }

@@ -70,7 +70,8 @@ class AddBlogActivity : AppCompatActivity() {
                             "Text" to text.text.toString(),
                             "UserName" to currentUser?.email.toString(),
                             "UserPhoto" to currentUser?.photoUrl.toString(),
-                            "Date" to ymdhm.time
+                            "Date" to ymdhm.time,
+                            "HavePhoto" to (uploadImage.visibility==View.VISIBLE)
                         )
                         db.collection("Blog").document(textName.text.toString())
                             .set(hash)

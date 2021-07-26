@@ -11,15 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blog">
-        <activity android:name=".AddBlogActivity"></activity>
+        android:theme="@style/Theme.Blog.NoActionBar">
+        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".AddBlogActivity" />
         <activity android:name=".BlogSelected" />
         <activity
             android:name=".LoginSucces"
             android:label="@string/title_activity_login_succes"
             android:theme="@style/Theme.Blog.NoActionBar" />
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.Blog.NoActionBar">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

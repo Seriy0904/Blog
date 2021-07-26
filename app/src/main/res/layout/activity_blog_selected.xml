@@ -1,78 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_and_purle"
+    android:orientation="vertical"
     tools:context=".BlogSelected">
 
-    <LinearLayout
-        android:background="@drawable/blog_recycler_item_drawable"
+    <include
+        android:id="@+id/blog_toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbarSize="0dp">
-
-        <TextView
-            android:id="@+id/textNameInBlog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blog_recycler_item_drawable"
-            android:padding="8dp"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/textInBlog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="6dp"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/imageInBlog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="3dp"
-            android:contentDescription="IMAGE" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/blog_recycler_item_drawable"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:scrollbarSize="0dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userPhotoInBlog"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
+            <TextView
+                android:id="@+id/textNameInBlog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blog_recycler_item_drawable"
+                android:padding="8dp"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textInBlog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="6dp"
-                android:layout_marginStart="6dp"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageInBlog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="3dp"
                 android:contentDescription="IMAGE" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@drawable/blog_recycler_item_drawable"
+                android:gravity="center">
 
-                <TextView
-                    android:id="@+id/userNameInBlog"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userPhotoInBlog"
+                    android:layout_width="60sp"
+                    android:layout_height="60sp"
+                    android:layout_marginVertical="6dp"
+                    android:layout_marginStart="6dp"
+                    android:contentDescription="IMAGE" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="6dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textSize="26sp" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/emailInBlog"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="6dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/userNameInBlog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/emailInBlog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textSize="18sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

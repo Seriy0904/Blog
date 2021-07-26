@@ -58,7 +58,7 @@ class LoginSucces : AppCompatActivity() {
 
     private fun updateUI(userInfo: FirebaseUser?) {
         if (userInfo != null) {
-            val map = hashMapOf<String,Any>("CustomName" to userInfo.displayName!!)
+            val map = hashMapOf<String,Any>("CustomName" to userInfo.displayName!!,"CustomPhoto" to userInfo.photoUrl!!)
             val intent = Intent(this, MainActivity::class.java)
             Firebase.firestore.collection("Accounts")
                 .document(userInfo.email!!)
@@ -69,7 +69,6 @@ class LoginSucces : AppCompatActivity() {
                             .set(map)
                     }
                 }
-
             startActivity(intent)
         }
     }

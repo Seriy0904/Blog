@@ -1,5 +1,6 @@
 package uz.urgench.blog
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
@@ -24,7 +26,6 @@ class ListFragment : Fragment() {
     private val textList: ArrayList<String> = arrayListOf()
     private val textNameList: ArrayList<String> = arrayListOf()
     private val userList: ArrayList<String> = arrayListOf()
-    private val photoUserList: ArrayList<String> = arrayListOf()
     private val dateList: ArrayList<Timestamp> = arrayListOf()
     private lateinit var myItemRecyclerViewAdapter: MyItemRecyclerViewAdapter
     private lateinit var swipe_layout: SwipeRefreshLayout
@@ -50,7 +51,6 @@ class ListFragment : Fragment() {
         textList.clear()
         textNameList.clear()
         userList.clear()
-        photoUserList.clear()
         dateList.clear()
         val db = Firebase.firestore
         db.collection("Blog").get()
@@ -59,37 +59,36 @@ class ListFragment : Fragment() {
                     textNameList.add(document.id)
                     textList.add(document.get("Text").toString())
                     userList.add(document.get("UserName").toString())
-                    photoUserList.add(document.get("UserPhoto").toString())
                     dateList.add(document.get("Date") as Timestamp)
                 }
                 blogsList.layoutManager = LinearLayoutManager(activity)
                 val onUserClickListener: MyItemRecyclerViewAdapter.OnUserClickListener =
                     object : MyItemRecyclerViewAdapter.OnUserClickListener {
-                        override fun onLongClick(
-                            textName: String,
-                            clas: MyItemRecyclerViewAdapter
-                        ) {
+                        override fun onLongClick(textName: String) {
                         }
 
-                        override fun onClick(textName: String, clas: MyItemRecyclerViewAdapter) {
+                        override fun onClick(textName: String) {
                         }
                     }
                 myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(
                     textNameList,
                     textList,
                     userList,
-                    photoUserList,
-                    dateList,this,
-                    onUserClickListener)
+                    dateList,
+                    onUserClickListener
+                )
                 blogsList.adapter = myItemRecyclerViewAdapter
                 val itemTouchHelper = ItemTouchHelper(gestures)
-
                 itemTouchHelper.attachToRecyclerView(blogsList)
             }
     }
 
     val gestures = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ) = false
 
         override fun onChildDraw(
             c: Canvas,
@@ -109,10 +108,27 @@ class ListFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            myItemRecyclerViewAdapter.removeItem(viewHolder as MyItemRecyclerViewAdapter.ViewHolder, viewHolder.absoluteAdapterPosition)
+            val position = viewHolder.absoluteAdapterPosition
+            AlertDialog.Builder(activity)
+                .setTitle("Вы уверены?")
+                .setMessage("Вы уверены что хотите удалить запись ${textNameList[position]}?")
+                .setPositiveButton("Да, удалить") { dial, id ->
+                    Firebase.firestore.collection("Blog").document(textNameList[position]).delete()
+                    Firebase.storage.reference.child("chatFiles/${textNameList[position]}")
+                        .delete()
+                    putToList()
+                }.setNeutralButton("Отмена") { dial, id ->
+                    myItemRecyclerViewAdapter.notifyDataSetChanged()
+                }.setOnCancelListener { dial ->
+                    myItemRecyclerViewAdapter.notifyDataSetChanged()
+                }.show()
+//            myItemRecyclerViewAdapter.removeItem(viewHolder as MyItemRecyclerViewAdapter.ViewHolder, viewHolder.absoluteAdapterPosition)
         }
 
-        override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        override fun getSwipeDirs(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
             if (userList[viewHolder.absoluteAdapterPosition] != Firebase.auth.currentUser?.email) return 0
             return super.getSwipeDirs(recyclerView, viewHolder)
         }
