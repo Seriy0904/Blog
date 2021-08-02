@@ -95,13 +95,16 @@
             android:textSize="18sp"
             tools:text="User" />
     </LinearLayout>
+
     <ImageButton
         android:id="@+id/commentsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:layout_alignParentEnd="true"
         android:layout_marginVertical="3dp"
         android:layout_marginEnd="8dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/userInfo"
         android:background="@drawable/comment_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:minWidth="48dp"
+        android:minHeight="48dp" />
 </RelativeLayout>
