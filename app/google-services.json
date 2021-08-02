@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "722083836199",
+    "project_id": "basadateforbrig",
+    "storage_bucket": "basadateforbrig.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722083836199:android:3575f661846552c5553902",
+        "android_client_info": {
+          "package_name": "uz.urgench.blog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722083836199-7c28o0skfc24vjvkef7cu8r94ul61l29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.urgench.blog",
+            "certificate_hash": "11a8622d600b7c7e6a7ea9fd3eebd1c5873f1011"
+          }
+        },
+        {
+          "client_id": "722083836199-8gigbom2usld3cvqmjmlfjhaa4dcu4ea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdteBCYmX5wnB0-rakJRV5CgoGoILRglo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722083836199-8gigbom2usld3cvqmjmlfjhaa4dcu4ea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

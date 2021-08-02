@@ -16,12 +16,13 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:layout_marginStart="10dp"
             android:id="@+id/editComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:hint="Добавте коментарий" />
+            android:hint="Добавте коментарий"
+            android:minHeight="48dp" />
 
         <ImageButton
             android:id="@+id/save_comment"
