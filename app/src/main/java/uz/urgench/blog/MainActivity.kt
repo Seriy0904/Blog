@@ -4,18 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.customview.widget.ViewDragHelper
+import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import uz.urgench.blog.databinding.ActivityMainBinding
+import java.lang.reflect.Field
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private var onFragment: Short = 1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +37,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         binding.drawerLayout.addDrawerListener(toggle)
         findViewById<NavigationView>(R.id.nav_view).setNavigationItemSelectedListener(this)
-        val navigationDrawer: View = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
+        try {
+            val draggerField: Field = DrawerLayout::class.java.getDeclaredField("mLeftDragger")
+            draggerField.isAccessible = true
+            val vdh = draggerField.get(binding.drawerLayout)
+            val edgeSizeField: Field = ViewDragHelper::class.java.getDeclaredField("mEdgeSize")
+            edgeSizeField.isAccessible = true
+            edgeSizeField.setInt(vdh, (edgeSizeField.get(vdh) as Int * 3))
+        } catch (e: Exception) { }
+        val navigationDrawer= binding.navView.getHeaderView(0)
         navigationDrawer.findViewById<TextView>(R.id.header_title_username).text =
             Firebase.auth.currentUser?.displayName
         navigationDrawer.findViewById<TextView>(R.id.header_title_email).text =

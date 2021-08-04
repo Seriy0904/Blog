@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
@@ -23,12 +24,14 @@ class AddBlogActivity : AppCompatActivity() {
     private lateinit var text: EditText
     private lateinit var textDetalis: ImageButton
     private lateinit var saveBlog: ImageButton
-    private lateinit var uploadImage:ImageView
+    private lateinit var uploadImage: ImageView
     private val IMAGE_REQUEST = 65
     private val currentUser = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_blog)
+        setSupportActionBar(findViewById(R.id.addBlogToolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         textName = findViewById(R.id.editTextName)
         text = findViewById(R.id.editText)
         textDetalis = findViewById(R.id.textDetalis)
@@ -36,20 +39,21 @@ class AddBlogActivity : AppCompatActivity() {
         uploadImage = findViewById(R.id.uploadImage)
         textDetalis.setOnClickListener {
             val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(i,IMAGE_REQUEST)
+            startActivityForResult(i, IMAGE_REQUEST)
         }
-        saveBlog.setOnClickListener {putDB()}
+        saveBlog.setOnClickListener { putDB() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK&&requestCode == IMAGE_REQUEST){
-            if(data?.data!=null){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_REQUEST) {
+            if (data?.data != null) {
                 uploadImage.visibility = View.VISIBLE
                 uploadImage.setImageURI(data.data)
             }
         }
     }
+
     private fun putDB() {
         if (uploadImage.visibility == View.VISIBLE) {
             val baos = ByteArrayOutputStream()
@@ -64,18 +68,18 @@ class AddBlogActivity : AppCompatActivity() {
             val ymdhm = GregorianCalendar(TimeZone.getTimeZone("gmt"))
             db.collection("Blog").document(textName.text.toString())
                 .get()
-                .addOnSuccessListener {data->
+                .addOnSuccessListener { data ->
                     if (data["Text"] == null) {
                         val hash = hashMapOf<String, Any>(
                             "Text" to text.text.toString(),
                             "UserName" to currentUser?.email.toString(),
                             "UserPhoto" to currentUser?.photoUrl.toString(),
                             "Date" to ymdhm.time,
-                            "HavePhoto" to (uploadImage.visibility==View.VISIBLE)
+                            "HavePhoto" to (uploadImage.visibility == View.VISIBLE)
                         )
                         db.collection("Blog").document(textName.text.toString())
                             .set(hash)
-                        startActivity(Intent(this,MainActivity::class.java))
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         Toast.makeText(
                             this,
@@ -84,6 +88,13 @@ class AddBlogActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-        }else Toast.makeText(this, "Сначала введите имя и текст", Toast.LENGTH_LONG).show()
+        } else Toast.makeText(this, "Сначала введите имя и текст", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> super.onBackPressed()
+        }
+        return true
     }
 }

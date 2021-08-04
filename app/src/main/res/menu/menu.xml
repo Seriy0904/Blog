@@ -4,7 +4,10 @@
     <item
         android:id="@+id/replaceList"
         android:icon="@drawable/update_image"
-        android:title="Обновить"
+        android:title="@string/update_text"
         app:showAsAction="always" />
-
+    <item
+        android:visible="false"
+        android:id="@+id/backToBlog"
+        android:title="@string/goto_blog_from_comments" />
 </menu>

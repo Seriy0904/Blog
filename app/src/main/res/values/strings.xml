@@ -35,4 +35,14 @@
     <string name="menu_home">Главная</string>
     <string name="menu_gallery">Настройки</string>
     <string name="menu_slideshow">Мой Профиль</string>
+    <string name="subscribe_text">Подписаться</string>
+    <string name="save_changes_in_profile">SAVE_CHANGES</string>
+    <string name="exit_from_account">Выйти из аккаунта</string>
+    <string name="update_text">Обновить</string>
+    <string name="goto_blog_from_comments">Перейти к блогу</string>
+    <string name="save_blog_image_description">SAVE_BLOG</string>
+    <string name="add_comment_hint">Добавте коментарий</string>
+    <string name="uploaded_image_blogselected_description">UPLOADED_IMAGE</string>
+    <string name="user_photo_in_blogselected">USER_PHOTO</string>
+    <string name="comments_description_blogselected">COMMENTS</string>
 </resources>

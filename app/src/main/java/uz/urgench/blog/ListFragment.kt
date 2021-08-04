@@ -27,7 +27,7 @@ class ListFragment : Fragment() {
     private val textNameList: ArrayList<String> = arrayListOf()
     private val userList: ArrayList<String> = arrayListOf()
     private val dateList: ArrayList<Timestamp> = arrayListOf()
-    private lateinit var myItemRecyclerViewAdapter: MyItemRecyclerViewAdapter
+    private lateinit var blogListAdapter: BlogListAdapter
     private lateinit var swipe_layout: SwipeRefreshLayout
     private lateinit var blogsList: RecyclerView
     private lateinit var addBlog: ImageButton
@@ -40,7 +40,7 @@ class ListFragment : Fragment() {
         addBlog.setOnClickListener {
             activity?.startActivity(Intent(activity, AddBlogActivity::class.java))
         }
-        swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purle))
+        swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purple))
         swipe_layout.setOnRefreshListener {
             putToList()
             swipe_layout.isRefreshing = false
@@ -62,22 +62,13 @@ class ListFragment : Fragment() {
                     dateList.add(document.get("Date") as Timestamp)
                 }
                 blogsList.layoutManager = LinearLayoutManager(activity)
-                val onUserClickListener: MyItemRecyclerViewAdapter.OnUserClickListener =
-                    object : MyItemRecyclerViewAdapter.OnUserClickListener {
-                        override fun onLongClick(textName: String) {
-                        }
-
-                        override fun onClick(textName: String) {
-                        }
-                    }
-                myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(
+                blogListAdapter = BlogListAdapter(
                     textNameList,
                     textList,
                     userList,
-                    dateList,
-                    onUserClickListener
+                    dateList
                 )
-                blogsList.adapter = myItemRecyclerViewAdapter
+                blogsList.adapter = blogListAdapter
                 val itemTouchHelper = ItemTouchHelper(gestures)
                 itemTouchHelper.attachToRecyclerView(blogsList)
             }
@@ -118,11 +109,11 @@ class ListFragment : Fragment() {
                         .delete()
                     putToList()
                 }.setNeutralButton("Отмена") { dial, id ->
-                    myItemRecyclerViewAdapter.notifyDataSetChanged()
+                    blogListAdapter.notifyDataSetChanged()
                 }.setOnCancelListener { dial ->
-                    myItemRecyclerViewAdapter.notifyDataSetChanged()
+                    blogListAdapter.notifyDataSetChanged()
                 }.show()
-//            myItemRecyclerViewAdapter.removeItem(viewHolder as MyItemRecyclerViewAdapter.ViewHolder, viewHolder.absoluteAdapterPosition)
+//            blogListAdapter.removeItem(viewHolder as BlogListAdapter.ViewHolder, viewHolder.absoluteAdapterPosition)
         }
 
         override fun getSwipeDirs(

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_and_purle"
+    android:background="@color/blue_and_purple"
     android:orientation="vertical"
     tools:context=".CommentActivity">
 
@@ -16,12 +16,13 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:layout_marginStart="10dp"
             android:id="@+id/editComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:hint="Добавте коментарий" />
+            android:paddingHorizontal="10dp"
+            android:hint="@string/add_comment_hint" />
 
         <ImageButton
             android:id="@+id/save_comment"
@@ -30,6 +31,7 @@
             android:background="@drawable/save_blog" />
 
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
         android:layout_width="match_parent"

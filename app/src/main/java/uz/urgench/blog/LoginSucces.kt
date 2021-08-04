@@ -49,7 +49,7 @@ class LoginSucces : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)!!
+                val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
             }
@@ -58,36 +58,34 @@ class LoginSucces : AppCompatActivity() {
 
     private fun updateUI(userInfo: FirebaseUser?) {
         if (userInfo != null) {
-            val map = hashMapOf<String,Any>("CustomName" to userInfo.displayName!!,"CustomPhoto" to userInfo.photoUrl!!)
             val intent = Intent(this, MainActivity::class.java)
-            Firebase.firestore.collection("Accounts")
-                .document(userInfo.email!!)
+            Firebase.firestore.collection("Accounts").document(userInfo.email!!)
                 .get().addOnSuccessListener {
-                    if(it["CustomName"]==null){
+                    if (it["CustomName"] == null) {
                         Firebase.firestore.collection("Accounts")
-                            .document(userInfo.email!!)
-                            .set(map)
+                            .document("sirojiddin.nuraddinov@gmail.com")
+                            .set(
+                                hashMapOf(
+                                    "CustomName" to userInfo.displayName!!,
+                                    "CustomPhoto" to userInfo.photoUrl!!.toString()
+                                )
+                            ).addOnSuccessListener { startActivity(intent) }
                     }
                 }
-            startActivity(intent)
+
         }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("TAG", "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("TAG", "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
+            .addOnSuccessListener {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d("TAG", "signInWithCredential:success")
+                val user = auth.currentUser
+                updateUI(user)
             }
+
     }
 
 }
