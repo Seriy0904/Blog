@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_and_purple"
+    android:background="@color/blue_and_purle"
     android:orientation="vertical"
     tools:context=".CommentActivity">
 
@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:paddingHorizontal="10dp"
-            android:hint="@string/add_comment_hint" />
+            android:hint="Добавте коментарий"
+            android:minHeight="48dp" />
 
         <ImageButton
             android:id="@+id/save_comment"
@@ -31,7 +31,6 @@
             android:background="@drawable/save_blog" />
 
     </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
         android:layout_width="match_parent"

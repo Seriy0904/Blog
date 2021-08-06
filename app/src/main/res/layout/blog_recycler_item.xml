@@ -7,8 +7,8 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    android:background="@color/blue_and_purple"
     android:elevation="3dp"
+    android:background="@color/blue_and_purle"
     android:gravity="start">
 
     <LinearLayout
@@ -50,12 +50,12 @@
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_marginHorizontal="16dp"
-            android:contentDescription="IMAGE"
             android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="IMAGE" />
 
         <TextView
-            android:id="@+id/itemDate"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="25dp"
@@ -64,11 +64,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/userInfoList"
+        android:id="@+id/userInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/blogInfo"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -79,73 +79,32 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/userText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:minLines="1"
-                android:paddingHorizontal="8dp"
-                android:textColor="#ebebeb"
-                android:textSize="18sp"
-                tools:text="User" />
-
-            <TextView
-                android:id="@+id/subscribe_blog_list"
-                style="@style/buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/blue_and_purple"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="top"
-                android:paddingHorizontal="4dp"
-                android:paddingTop="0dp"
-                android:text="@string/subscribe_text"
-                android:textColor="@color/red"
-                android:textSize="20sp" />
-
-        </LinearLayout>
+         <TextView
+            android:ellipsize="end"
+            android:minLines="1"
+            android:maxLines="1"
+            android:id="@+id/userText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:textColor="#ebebeb"
+            android:textSize="18sp"
+            tools:text="User" />
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/like_buttonI_in_list"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/userInfoList"
-        android:layout_marginVertical="3dp"
-        android:layout_marginEnd="30dp"
-        android:layout_toStartOf="@id/comments_button_in_list"
-        android:background="@drawable/button_selector" />
-
-    <TextView
-        android:id="@+id/like_amount_in_list"
+        android:id="@+id/commentsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/userInfoList"
-        android:layout_alignBottom="@id/like_buttonI_in_list"
-        android:layout_marginHorizontal="10dp"
-        android:layout_toStartOf="@id/like_buttonI_in_list"
-        android:gravity="center"
-        android:textSize="16sp"
-        tools:text="43" />
-
-    <ImageButton
-        android:id="@+id/comments_button_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userInfoList"
+        android:layout_below="@+id/userInfo"
         android:layout_alignParentEnd="true"
         android:layout_marginVertical="3dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/comment_image" />
+        android:background="@drawable/comment_image"
+        android:minWidth="48dp"
+        android:minHeight="48dp" />
 </RelativeLayout>
