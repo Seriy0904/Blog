@@ -36,6 +36,7 @@ class ListFragment : Fragment() {
         blogsList = view.findViewById(R.id.list)
         addBlog = view.findViewById(R.id.addBlog)
         swipe_layout = view.findViewById(R.id.swipe_layout)
+
         putToList()
         addBlog.setOnClickListener {
             activity?.startActivity(Intent(activity, AddBlogActivity::class.java))
@@ -92,7 +93,7 @@ class ListFragment : Fragment() {
                 actionState, isCurrentlyActive
             )
                 .addSwipeLeftBackgroundColor(ContextCompat.getColor(activity!!, R.color.red))
-                .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                .addSwipeLeftActionIcon(R.drawable.delete_icon_60)
                 .create()
                 .decorate()
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

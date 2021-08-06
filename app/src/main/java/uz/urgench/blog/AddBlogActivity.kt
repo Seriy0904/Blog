@@ -55,16 +55,9 @@ class AddBlogActivity : AppCompatActivity() {
     }
 
     private fun putDB() {
-        if (uploadImage.visibility == View.VISIBLE) {
-            val baos = ByteArrayOutputStream()
-            uploadImage.drawable.toBitmap()
-                .compress(Bitmap.CompressFormat.JPEG, 70, baos)
-            val byteArray = baos.toByteArray()
-            val storage = Firebase.storage.reference.child("chatFiles/" + textName.text.toString())
-            storage.putBytes(byteArray)
-        }
+        val db = Firebase.firestore
+
         if (textName.text.toString() != "" && text.text.toString() != "") {
-            val db = Firebase.firestore
             val ymdhm = GregorianCalendar(TimeZone.getTimeZone("gmt"))
             db.collection("Blog").document(textName.text.toString())
                 .get()
@@ -79,7 +72,22 @@ class AddBlogActivity : AppCompatActivity() {
                         )
                         db.collection("Blog").document(textName.text.toString())
                             .set(hash)
-                        startActivity(Intent(this, MainActivity::class.java))
+                        if (uploadImage.visibility == View.VISIBLE) {
+                            val baos = ByteArrayOutputStream()
+                            uploadImage.drawable.toBitmap()
+                                .compress(Bitmap.CompressFormat.JPEG, 70, baos)
+                            val byteArray = baos.toByteArray()
+                            val storage =
+                                Firebase.storage.reference.child("chatFiles/" + textName.text.toString())
+                            storage.putBytes(byteArray).addOnSuccessListener {
+                                storage.downloadUrl.addOnSuccessListener { uri ->
+                                    db.collection("Blog").document("${textName.text}")
+                                        .update(mapOf("AddedPhoto" to uri.toString())).addOnSuccessListener {
+                                            startActivity(Intent(this, MainActivity::class.java))
+                                        }
+                                }
+                            }
+                        }
                     } else {
                         Toast.makeText(
                             this,
@@ -88,8 +96,10 @@ class AddBlogActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
+
         } else Toast.makeText(this, "Сначала введите имя и текст", Toast.LENGTH_LONG).show()
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

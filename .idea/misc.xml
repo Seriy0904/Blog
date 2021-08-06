@@ -3,20 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/add_blog_image.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/button_selector.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/comment_image.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/delete_icon_24.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/delete_icon_60.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/edit_icon.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/edit_text_drawable.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/like_icon.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/like_icon_pressed.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/more_icon.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/save_blog.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/update_image.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/font/adamina.xml" value="0.15098684210526317" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_add_blog.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_blog_selected.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_comment_activiy.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_main.xml" value="0.23257328990228013" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/blog_recycler_item.xml" value="0.25" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/blog_recycler_item.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/coment_items.xml" value="0.23257328990228013" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/edit_comment_dialog.xml" value="0.2348684210526316" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/fragment_chat_list.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/fragment_profile.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/toolbar.xml" value="0.23257328990228013" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/menu/comment_popup.xml" value="0.2348684210526316" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/menu/menu.xml" value="0.23257328990228013" />
       </map>
     </option>

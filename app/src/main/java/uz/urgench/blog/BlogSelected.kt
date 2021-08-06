@@ -1,6 +1,7 @@
 package uz.urgench.blog
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
@@ -12,7 +13,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class BlogSelected : AppCompatActivity() {
     private lateinit var textName: TextView
@@ -34,7 +34,7 @@ class BlogSelected : AppCompatActivity() {
         userPhoto = findViewById(R.id.userPhotoInBlog)
         userName = findViewById(R.id.userNameInBlog)
         val act = Intent(this, CommentActivity::class.java)
-        act.putExtra("BlogName", intent.getStringExtra("BlogName")).putExtra("Where",false)
+        act.putExtra("BlogName", intent.getStringExtra("BlogName")).putExtra("Where", false)
         commentBut.setOnClickListener {
             startActivity(act)
         }
@@ -55,15 +55,16 @@ class BlogSelected : AppCompatActivity() {
                     }
                 text.text = doc["Text"].toString()
                 textName.text = getExtra
+                val url: String = doc["AddedPhoto"].toString()
+                if(url!=null){
+                    Glide.with(this).load(doc["AddedPhoto"]).into(image)
+                    image.setOnClickListener { _ ->
+                        val gallery = Intent().setAction(Intent.ACTION_VIEW)
+                        gallery.setDataAndType(Uri.parse(url), "image/*")
+                        startActivity(gallery)
+                    }
+                }
             }
-        Firebase.storage.reference.child("chatFiles/$getExtra").downloadUrl.addOnSuccessListener {
-            Glide.with(this).load(it).into(image)
-            image.setOnClickListener {_->
-                val gallery = Intent().setAction(Intent.ACTION_VIEW)
-                gallery.setDataAndType(it, "image/*")
-                startActivity(gallery)
-            }
-        }
         add = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         add.loadAd(adRequest)

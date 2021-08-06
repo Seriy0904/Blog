@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey"
+    android:padding="8dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/refactor_comment_tittle"
+        android:layout_width="match_parent"
+        android:text="Изменить комментарий"
+        android:textSize="24sp"
+        android:textColor="@color/light_grey"
+        android:paddingHorizontal="6dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginEnd="5dp"
+        android:id="@+id/refactor_comment_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/refactor_comment_tittle"
+        android:layout_toStartOf="@+id/save_refactor_comment"
+        android:gravity="start"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="10dp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        tools:text="Textwddwwdwdsdwdswwdas" />
+
+    <ImageButton
+        android:layout_marginBottom="2dp"
+        android:id="@+id/save_refactor_comment"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/refactor_comment_edittext"
+        android:background="@drawable/edit_icon" />
+</RelativeLayout>

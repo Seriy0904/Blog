@@ -2,13 +2,11 @@ package uz.urgench.blog
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +26,7 @@ class CommentActivity : AppCompatActivity() {
     private lateinit var adapter: CommentsAdapter
     private val commentUserList = arrayListOf<String>()
     private val commentTextList = arrayListOf<String>()
-    private val commentsId = arrayListOf<String>()
+    val commentsId = arrayListOf<String>()
     private val commentDateList = arrayListOf<Timestamp>()
     private lateinit var editComment: EditText
     private lateinit var saveComments: ImageButton
@@ -36,16 +34,16 @@ class CommentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment_activiy)
+        editComment = findViewById(R.id.editComment)
+        saveComments = findViewById(R.id.save_comment)
+        saveComments.setOnClickListener { saveComment() }
+        commentList = findViewById(R.id.comments_list)
         db = Firebase.firestore.collection("Blog")
             .document(intent.getStringExtra("BlogName")!!).collection("Comments")
         setSupportActionBar(findViewById(R.id.toolbar_comments))
         supportActionBar?.title = intent.getStringExtra("BlogName")!!
         supportActionBar?.subtitle = "Комментарии"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        editComment = findViewById(R.id.editComment)
-        saveComments = findViewById(R.id.save_comment)
-        saveComments.setOnClickListener { saveComment() }
-        commentList = findViewById(R.id.comments_list)
         putToList()
     }
 
@@ -57,7 +55,7 @@ class CommentActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    private fun putToList() {
+    fun putToList() {
         commentTextList.clear()
         commentUserList.clear()
         commentDateList.clear()
@@ -70,30 +68,11 @@ class CommentActivity : AppCompatActivity() {
                     commentDateList.add(doc.get("CommentDate") as Timestamp)
                     commentTextList.add(doc.getString("CommentText").toString())
                     commentUserList.add(doc.getString("CommentUser").toString())
-                    val click = object : CommentsAdapter.OnUserClickListener {
-                        override fun delete(position: Int) {
-                            AlertDialog.Builder(this@CommentActivity)
-                                .setTitle("Вы уверены?")
-                                .setMessage("Вы уверены что хотите удалить комментарий ${commentTextList[position]}?")
-                                .setPositiveButton("Да, удалить") { dial, id ->
-                                    db.document(commentsId[position]).get().addOnSuccessListener {
-                                        Log.d("MyTag", commentsId[position])
-                                        if (it.getString("CommentUser") == Firebase.auth.currentUser?.email) {
-                                            db.document(commentsId[position]).delete()
-                                            putToList()
-                                        }
-                                    }
-                                }.setNeutralButton("Отмена") { dial, id ->
-                                }.setOnCancelListener { dial ->
-                                }.show()
-                        }
-
-                    }
                     adapter = CommentsAdapter(
                         commentUserList,
                         commentTextList,
                         commentDateList,
-                        click
+                        this
                     )
                     commentList.adapter = adapter
                 }

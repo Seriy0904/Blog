@@ -1,11 +1,13 @@
 package uz.urgench.blog
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,7 +15,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 
 class BlogListAdapter(
@@ -44,45 +45,34 @@ class BlogListAdapter(
             holder.comments.setOnClickListener {//CommentsButton
                 startactivity(holder, position, CommentActivity())
             }
+            var likesList: ArrayList<String> = arrayListOf()
             val blogDir = db.collection("Blog").document(textNameList[position])
             blogDir//Download photo from firebase storage
                 .get().addOnSuccessListener { doc ->
-                    if (doc["HavePhoto"] != null && doc["HavePhoto"] as Boolean) {
-                        Firebase.storage.reference.child("chatFiles/${textNameList[position]}").downloadUrl
-                            .addOnSuccessListener {
-                                holder.imageItem.visibility = View.VISIBLE
-                                Glide.with(holder.imageItem.context).load(it)
-                                    .into(holder.imageItem)
-                            }
+                    if (doc["LikeList"] != null) {
+                        likesList = doc["LikeList"] as ArrayList<String>
+                        holder.likeAmount.text =
+                            if (likesList.size == 0) "" else likesList.size.toString()
+                    }
+                    if (doc["AddedPhoto"] != null) {
+                        Glide.with(holder.imageItem.context).load(doc.getString("AddedPhoto"))
+                            .into((holder.imageItem))
+                        holder.imageItem.visibility = View.VISIBLE
+
                     }
                 }
             holder.likeBut.setOnClickListener {
-                blogDir//Like button listener
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        if (doc["LikeList"] != null) {
-                            val likesList: ArrayList<String> = doc["LikeList"] as ArrayList<String>
-                            if (likesList.size > 0 && likesList.contains(email)) {
-                                likesList.remove(email)
-                                Log.d("MyTag", "Massiv removed, ${likesList.size}")
-                                blogDir.update(mapOf("LikeList" to likesList))
-                                holder.likeAmount.text = ""
-                            } else {
-                                likesList.add(email)
-                                Log.d(
-                                    "MyTag",
-                                    "Massiv added 68, ${likesList.size}, ${likesList.contains(email)}"
-                                )
-                                blogDir.update(mapOf("LikeList" to likesList))
-                                holder.likeAmount.text = likesList.size.toString()
-                            }
-                        } else {
-                            val likeList = arrayListOf(email)
-                            Log.d("MyTag", "Massiv added 73")
-                            blogDir.update(mapOf("LikeList" to likeList))
-                            holder.likeAmount.text = "1"
-                        }
-                    }
+                val mLikeList = likesList
+                if (mLikeList.contains(email)) {
+                    mLikeList.remove(email)
+                    blogDir.update(mapOf("LikeList" to mLikeList))
+                    holder.likeAmount.text =
+                        if (mLikeList.size == 0) "" else mLikeList.size.toString()
+                } else {
+                    mLikeList.add(email)
+                    blogDir.update(mapOf("LikeList" to mLikeList))
+                    holder.likeAmount.text = mLikeList.size.toString()
+                }
             }
             holder.textName.text = textNameList[position]
             db.collection("Accounts")
@@ -121,7 +111,7 @@ class BlogListAdapter(
         val text: TextView = itemView.findViewById(R.id.text)
         val user: TextView = itemView.findViewById(R.id.userText)
         val date: TextView = itemView.findViewById(R.id.itemDate)
-        val subscribe: Button = itemView.findViewById(R.id.subscribe_blog_list)
+        val subscribe: TextView = itemView.findViewById(R.id.subscribe_blog_list)
         val likeBut: ImageButton = itemView.findViewById(R.id.like_buttonI_in_list)
         val likeAmount: TextView = itemView.findViewById(R.id.like_amount_in_list)
         val comments: ImageButton = itemView.findViewById(R.id.comments_button_in_list)

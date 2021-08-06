@@ -70,6 +70,12 @@ class LoginSucces : AppCompatActivity() {
                                     "CustomPhoto" to userInfo.photoUrl!!.toString()
                                 )
                             ).addOnSuccessListener { startActivity(intent) }
+                    }else if(it["CustomPhoto"] == null){
+                        Firebase.firestore.collection("Accounts")
+                            .document("sirojiddin.nuraddinov@gmail.com")
+                            .update(
+                                mapOf("CustomPhoto" to userInfo.photoUrl!!.toString())
+                            ).addOnSuccessListener { startActivity(intent) }
                     }
                 }
 

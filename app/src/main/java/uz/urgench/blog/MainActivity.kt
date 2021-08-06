@@ -2,9 +2,12 @@ package uz.urgench.blog
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import uz.urgench.blog.databinding.ActivityMainBinding
 import java.lang.reflect.Field
@@ -20,7 +24,7 @@ import java.lang.reflect.Field
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
-    private var onFragment: Short = 1
+    var onFragment: Short = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,29 +48,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val edgeSizeField: Field = ViewDragHelper::class.java.getDeclaredField("mEdgeSize")
             edgeSizeField.isAccessible = true
             edgeSizeField.setInt(vdh, (edgeSizeField.get(vdh) as Int * 3))
-        } catch (e: Exception) { }
-        val navigationDrawer= binding.navView.getHeaderView(0)
-        navigationDrawer.findViewById<TextView>(R.id.header_title_username).text =
-            Firebase.auth.currentUser?.displayName
-        navigationDrawer.findViewById<TextView>(R.id.header_title_email).text =
-            Firebase.auth.currentUser?.email
-        Glide.with(this).load(Firebase.auth.currentUser?.photoUrl)
-            .into(navigationDrawer.findViewById(R.id.account_photo))
+        } catch (e: Exception) {
+        }
+        val navigationDrawer = binding.navView.getHeaderView(0)
+        Firebase.firestore.collection("Accounts").document(Firebase.auth.currentUser?.email!!).get()
+            .addOnSuccessListener {
+                navigationDrawer.findViewById<TextView>(R.id.header_title_username).text = it["CustomName"].toString()
+                navigationDrawer.findViewById<TextView>(R.id.header_title_email).text =
+                    Firebase.auth.currentUser?.email
+                Glide.with(this).load(it["CustomPhoto"].toString())
+                    .into(navigationDrawer.findViewById(R.id.account_photo))
+            }
         toggle.syncState()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
         findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
     }
 
+    private var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return
         } else if (onFragment == (2).toShort()) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
             onFragment = 1
             findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
-        } else super.onBackPressed()
+            return
+        } else if (doubleBackToExitPressedOnce) {
+            finish()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Нажмите еще раз для выхода", Toast.LENGTH_SHORT).show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            doubleBackToExitPressedOnce = false
+        }, 2000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

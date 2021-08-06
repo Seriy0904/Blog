@@ -20,11 +20,11 @@
 
         <ImageButton
             android:id="@+id/save_name"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="end"
-            android:background="@drawable/save_blog"
             android:visibility="gone"
+            android:background="@drawable/edit_icon"
             android:contentDescription="@string/save_changes_in_profile" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -43,7 +43,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:autofillHints="username"
-            android:inputType="textCapCharacters|text|number" />
+            android:inputType="textCapCharacters|text" />
 
         <TextView
             android:id="@+id/header_title_email_profile"

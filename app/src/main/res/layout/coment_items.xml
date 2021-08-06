@@ -48,4 +48,14 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="10dp" />
+
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/more_button_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textInComments"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/more_icon" />
 </RelativeLayout>

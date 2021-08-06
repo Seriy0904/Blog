@@ -100,12 +100,12 @@
                 android:textSize="18sp"
                 tools:text="User" />
 
-            <Button
+            <TextView
                 android:id="@+id/subscribe_blog_list"
                 style="@style/buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/blue_and_purple"
+                android:background="@color/blue_and_purple"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="top"
                 android:paddingHorizontal="4dp"
@@ -113,6 +113,7 @@
                 android:text="@string/subscribe_text"
                 android:textColor="@color/red"
                 android:textSize="20sp" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -120,14 +121,13 @@
         android:id="@+id/like_buttonI_in_list"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_toStartOf="@id/comments_button_in_list"
         android:layout_below="@id/userInfoList"
         android:layout_marginVertical="3dp"
         android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@id/comments_button_in_list"
         android:background="@drawable/button_selector" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/like_amount_in_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,6 +135,7 @@
         android:layout_alignBottom="@id/like_buttonI_in_list"
         android:layout_marginHorizontal="10dp"
         android:layout_toStartOf="@id/like_buttonI_in_list"
+        android:gravity="center"
         android:textSize="16sp"
         tools:text="43" />
 
