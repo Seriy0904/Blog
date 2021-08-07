@@ -1,7 +1,6 @@
 package uz.urgench.blog
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,15 +35,10 @@ class ListFragment : Fragment() {
         blogsList = view.findViewById(R.id.list)
         addBlog = view.findViewById(R.id.addBlog)
         swipe_layout = view.findViewById(R.id.swipe_layout)
-
         putToList()
-        addBlog.setOnClickListener {
-            activity?.startActivity(Intent(activity, AddBlogActivity::class.java))
-        }
         swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purple))
         swipe_layout.setOnRefreshListener {
             putToList()
-            swipe_layout.isRefreshing = false
         }
     }
 
@@ -72,10 +66,11 @@ class ListFragment : Fragment() {
                 blogsList.adapter = blogListAdapter
                 val itemTouchHelper = ItemTouchHelper(gestures)
                 itemTouchHelper.attachToRecyclerView(blogsList)
+                swipe_layout.isRefreshing = false
             }
     }
 
-    val gestures = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    private val gestures = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,

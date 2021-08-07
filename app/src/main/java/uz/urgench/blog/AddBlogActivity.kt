@@ -87,13 +87,9 @@ class AddBlogActivity : AppCompatActivity() {
                                         }
                                 }
                             }
-                        }
+                        }else startActivity(Intent(this, MainActivity::class.java))
                     } else {
-                        Toast.makeText(
-                            this,
-                            "Запись с таким именем уже существет",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this, "Запись ${data["Text"]} уже существет", Toast.LENGTH_LONG).show()
                     }
                 }
 

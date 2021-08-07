@@ -76,7 +76,7 @@ class LoginSucces : AppCompatActivity() {
                             .update(
                                 mapOf("CustomPhoto" to userInfo.photoUrl!!.toString())
                             ).addOnSuccessListener { startActivity(intent) }
-                    }
+                    }else startActivity(intent)
                 }
 
         }

@@ -114,6 +114,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     onFragment = 1
                     invalidateOptionsMenu()
                 }
+            R.id.nav_chats ->{
+                startActivity(Intent(this, AddBlogActivity::class.java))
+            }
             R.id.nav_profile -> {
                 if (onFragment != (2).toShort())
                     supportFragmentManager.beginTransaction()

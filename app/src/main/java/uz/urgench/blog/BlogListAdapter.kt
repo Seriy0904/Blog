@@ -1,6 +1,7 @@
 package uz.urgench.blog
 
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ class BlogListAdapter(
             }
             var likesList: ArrayList<String> = arrayListOf()
             val blogDir = db.collection("Blog").document(textNameList[position])
-            blogDir//Download photo from firebase storage
+            blogDir //Download photo from firebase storage
                 .get().addOnSuccessListener { doc ->
                     if (doc["LikeList"] != null) {
                         likesList = doc["LikeList"] as ArrayList<String>
@@ -55,12 +56,15 @@ class BlogListAdapter(
                             if (likesList.size == 0) "" else likesList.size.toString()
                     }
                     if (doc["AddedPhoto"] != null) {
-                        Glide.with(holder.imageItem.context).load(doc.getString("AddedPhoto"))
+                        Glide.with(holder.imageItem.context).load(Uri.parse(doc.getString("AddedPhoto")))
                             .into((holder.imageItem))
                         holder.imageItem.visibility = View.VISIBLE
 
                     }
                 }
+            blogDir.collection("Comments").get().addOnSuccessListener {
+                holder.commentsAmount.text = if(it.size()>0) it.size().toString() else ""
+            }
             holder.likeBut.setOnClickListener {
                 val mLikeList = likesList
                 if (mLikeList.contains(email)) {
@@ -111,9 +115,9 @@ class BlogListAdapter(
         val text: TextView = itemView.findViewById(R.id.text)
         val user: TextView = itemView.findViewById(R.id.userText)
         val date: TextView = itemView.findViewById(R.id.itemDate)
-        val subscribe: TextView = itemView.findViewById(R.id.subscribe_blog_list)
-        val likeBut: ImageButton = itemView.findViewById(R.id.like_buttonI_in_list)
+        val likeBut: ImageButton = itemView.findViewById(R.id.like_button_in_list)
         val likeAmount: TextView = itemView.findViewById(R.id.like_amount_in_list)
+        val commentsAmount: TextView = itemView.findViewById(R.id.comments_amount_in_list)
         val comments: ImageButton = itemView.findViewById(R.id.comments_button_in_list)
     }
 }

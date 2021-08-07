@@ -18,7 +18,7 @@
     <color name="background_main">#4512AE</color>
 
 <!--    Два основны цвета второй темы-->
-    <color name="blue_and_purle_two">#7546D7</color>
+    <color name="blue_and_purple_two">#7546D7</color>
     <color name="background_main_two">#4512AE</color>
 
     <color name="background_for_add_fragment">#6a79eb</color>

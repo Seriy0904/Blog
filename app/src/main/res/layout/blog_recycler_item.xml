@@ -7,8 +7,8 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
+    android:background="@color/blue_and_purple"
     android:elevation="3dp"
-    android:background="@color/blue_and_purle"
     android:gravity="start">
 
     <LinearLayout
@@ -50,12 +50,12 @@
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_marginHorizontal="16dp"
+            android:contentDescription="IMAGE"
             android:scaleType="centerCrop"
-            android:visibility="gone"
-            android:contentDescription="IMAGE" />
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/itemDate"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="25dp"
@@ -79,32 +79,67 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp" />
 
-         <TextView
-            android:ellipsize="end"
-            android:minLines="1"
-            android:maxLines="1"
+        <TextView
             android:id="@+id/userText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:gravity="top"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:minLines="1"
             android:textColor="#ebebeb"
             android:textSize="18sp"
             tools:text="User" />
     </LinearLayout>
 
+    <TextView
+        android:textColor="#353535"
+        android:id="@+id/like_amount_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:layout_alignTop="@id/comments_button_in_list"
+        android:layout_alignBottom="@id/like_button_in_list"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/like_button_in_list"
+        android:gravity="center_vertical"
+        tools:text="42" />
+
     <ImageButton
-        android:id="@+id/commentsButton"
+        android:id="@+id/like_button_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:layout_marginVertical="3dp"
+        android:layout_marginEnd="18dp"
+        android:layout_toStartOf="@id/comments_amount_in_list"
+        android:background="@drawable/like_selector" />
+
+    <TextView
+        android:textColor="#353535"
+        android:id="@+id/comments_amount_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:layout_alignTop="@id/comments_button_in_list"
+        android:layout_alignBottom="@id/like_button_in_list"
+        android:layout_marginVertical="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@id/comments_button_in_list"
+        android:gravity="center_vertical"
+        tools:text="9" />
+
+    <ImageButton
+        android:id="@+id/comments_button_in_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userInfo"
         android:layout_alignParentEnd="true"
         android:layout_marginVertical="3dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/comment_image"
-        android:minWidth="48dp"
-        android:minHeight="48dp" />
+        android:background="@drawable/comment_image" />
 </RelativeLayout>

@@ -32,6 +32,7 @@
     <TextView
         android:id="@+id/textInComments"
         android:layout_width="wrap_content"
+        android:layout_toStartOf="@+id/more_button_comments"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userNameInComments"
         android:layout_marginStart="20dp"
@@ -50,7 +51,7 @@
         android:layout_marginBottom="10dp" />
 
     <ImageButton
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/more_button_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
