@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/blue_and_purple"
     android:orientation="vertical"
-    tools:context=".BlogSelected">
+    tools:context=".activities.BlogSelected">
 
     <include
         android:id="@+id/blog_toolbar"
@@ -48,6 +48,7 @@
                 android:contentDescription="@string/uploaded_image_blogselected_description" />
 
             <LinearLayout
+                android:id="@+id/userInfoBlogSelected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blog_recycler_item_drawable"

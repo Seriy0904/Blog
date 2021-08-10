@@ -12,24 +12,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Blog.NoActionBar">
-        <activity android:name=".CommentActivity" />
-        <activity android:name=".AddBlogActivity" />
-        <activity android:name=".BlogSelected" />
         <activity
-            android:name=".LoginSucces"
+            android:name=".activities.OtherProfileActivity"
+            android:exported="true" />
+        <activity android:name=".activities.CommentActivity" />
+        <activity android:name=".activities.AddBlogActivity" />
+        <activity android:name=".activities.BlogSelected" />
+        <activity
+            android:name=".activities.LoginSucces"
             android:label="@string/title_activity_login_succes"
             android:theme="@style/Theme.Blog.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        </activity> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

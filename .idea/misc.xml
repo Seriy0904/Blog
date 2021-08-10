@@ -5,11 +5,16 @@
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/button_selector.xml" value="0.2450657894736842" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/like_icon.xml" value="0.24267100977198697" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_blog_selected.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_comment_activiy.xml" value="0.2348684210526316" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_login_succes.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_main.xml" value="0.23257328990228013" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/activity_other_profile.xml" value="0.2348684210526316" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/blog_recycler_item.xml" value="0.2348684210526316" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/coment_items.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/fragment_list_list.xml" value="0.23257328990228013" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/fragment_profile.xml" value="0.23257328990228013" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/layout/nav_header.xml" value="0.23257328990228013" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/menu/menu_drawer.xml" value="0.23257328990228013" />
         <entry key="app/src/main/res/layout/activity_add_blog.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/activity_blog_selected.xml" value="0.3541666666666667" />

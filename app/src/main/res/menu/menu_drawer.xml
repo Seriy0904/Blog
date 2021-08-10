@@ -9,7 +9,7 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_chats"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_add_blog" />
         <item
             android:id="@+id/nav_profile"
             android:title="@string/menu_slideshow" />

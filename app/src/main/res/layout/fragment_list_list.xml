@@ -21,14 +21,4 @@
             tools:itemCount="2"
             tools:listitem="@layout/blog_recycler_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <ImageButton
-        android:id="@+id/addBlog"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/add_blog_image" />
 </RelativeLayout>

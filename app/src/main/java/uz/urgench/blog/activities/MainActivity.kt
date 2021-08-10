@@ -1,4 +1,4 @@
-package uz.urgench.blog
+package uz.urgench.blog.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +18,9 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import uz.urgench.blog.ListFragment
+import uz.urgench.blog.ProfileFragment
+import uz.urgench.blog.R
 import uz.urgench.blog.databinding.ActivityMainBinding
 import java.lang.reflect.Field
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -29,11 +28,9 @@ class ListFragment : Fragment() {
     private lateinit var blogListAdapter: BlogListAdapter
     private lateinit var swipe_layout: SwipeRefreshLayout
     private lateinit var blogsList: RecyclerView
-    private lateinit var addBlog: ImageButton
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         blogsList = view.findViewById(R.id.list)
-        addBlog = view.findViewById(R.id.addBlog)
         swipe_layout = view.findViewById(R.id.swipe_layout)
         putToList()
         swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purple))

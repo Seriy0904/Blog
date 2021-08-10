@@ -16,6 +16,9 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import uz.urgench.blog.activities.BlogSelected
+import uz.urgench.blog.activities.CommentActivity
+import uz.urgench.blog.activities.OtherProfileActivity
 
 
 class BlogListAdapter(
@@ -45,6 +48,11 @@ class BlogListAdapter(
             }
             holder.comments.setOnClickListener {//CommentsButton
                 startactivity(holder, position, CommentActivity())
+            }
+            holder.userInfo.setOnClickListener {
+                val userProfileIntent = Intent(it.context,OtherProfileActivity::class.java)
+                userProfileIntent.putExtra("Email",userList[position])
+                it.context.startActivity(userProfileIntent)
             }
             var likesList: ArrayList<String> = arrayListOf()
             val blogDir = db.collection("Blog").document(textNameList[position])
@@ -109,6 +117,7 @@ class BlogListAdapter(
     override fun getItemCount() = textNameList.size
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val blogInfo: LinearLayout = itemView.findViewById(R.id.blogInfo)
+        val userInfo:LinearLayout = itemView.findViewById(R.id.userInfo)
         val imageItem: ImageView = itemView.findViewById(R.id.imageItem)
         val photoUser: ImageView = itemView.findViewById(R.id.userPhoto)
         val textName: TextView = itemView.findViewById(R.id.textName)

@@ -1,4 +1,4 @@
-package uz.urgench.blog
+package uz.urgench.blog.activities
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import uz.urgench.blog.R
 
 class BlogSelected : AppCompatActivity() {
     private lateinit var textName: TextView
@@ -21,6 +23,7 @@ class BlogSelected : AppCompatActivity() {
     private lateinit var userPhoto: ImageView
     private lateinit var userName: TextView
     private lateinit var add: AdView
+    private lateinit var userInfo: LinearLayout
     private lateinit var email: TextView
     private lateinit var commentBut: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +31,7 @@ class BlogSelected : AppCompatActivity() {
         setContentView(R.layout.activity_blog_selected)
         email = findViewById(R.id.emailInBlog)
         commentBut = findViewById(R.id.commentsButtonInBlog)
+        userInfo = findViewById(R.id.userInfoBlogSelected)
         textName = findViewById(R.id.textNameInBlog)
         text = findViewById(R.id.textInBlog)
         image = findViewById(R.id.imageInBlog)
@@ -46,6 +50,11 @@ class BlogSelected : AppCompatActivity() {
         fdb.collection("Blog").document(getExtra)
             .get()
             .addOnSuccessListener { doc ->
+                userInfo.setOnClickListener {
+                    val userProfileIntent = Intent(it.context, OtherProfileActivity::class.java)
+                    userProfileIntent.putExtra("Email", doc["UserName"].toString())
+                    it.context.startActivity(userProfileIntent)
+                }
                 email.text = doc["UserName"].toString()
                 fdb.collection("Accounts").document(email.text.toString())
                     .get()
@@ -56,7 +65,7 @@ class BlogSelected : AppCompatActivity() {
                 text.text = doc["Text"].toString()
                 textName.text = getExtra
                 val url: String = doc["AddedPhoto"].toString()
-                if(url!=null){
+                if (url != null) {
                     Glide.with(this).load(doc["AddedPhoto"]).into(image)
                     image.setOnClickListener { _ ->
                         val gallery = Intent().setAction(Intent.ACTION_VIEW)
@@ -65,6 +74,7 @@ class BlogSelected : AppCompatActivity() {
                     }
                 }
             }
+
         add = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         add.loadAd(adRequest)

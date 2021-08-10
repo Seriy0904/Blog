@@ -1,4 +1,4 @@
-package uz.urgench.blog
+package uz.urgench.blog.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import uz.urgench.blog.CommentsAdapter
+import uz.urgench.blog.R
 import java.util.*
 
 class CommentActivity : AppCompatActivity() {

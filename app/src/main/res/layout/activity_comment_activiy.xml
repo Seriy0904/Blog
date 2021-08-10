@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/blue_and_purple"
     android:orientation="vertical"
-    tools:context=".CommentActivity">
+    tools:context=".activities.CommentActivity">
 
     <include
         android:id="@+id/toolbar_comments"

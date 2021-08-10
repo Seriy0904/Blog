@@ -23,9 +23,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
-            android:visibility="gone"
             android:background="@drawable/edit_icon"
-            android:contentDescription="@string/save_changes_in_profile" />
+            android:contentDescription="@string/save_changes_in_profile"
+            android:visibility="gone" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_photo_profile"
@@ -39,11 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="220dp"
+            android:autofillHints="username"
+            android:inputType="textCapCharacters|text"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"
-            android:autofillHints="username"
-            android:inputType="textCapCharacters|text" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/header_title_email_profile"
