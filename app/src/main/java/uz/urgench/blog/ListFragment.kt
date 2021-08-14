@@ -58,7 +58,8 @@ class ListFragment : Fragment() {
                     textNameList,
                     textList,
                     userList,
-                    dateList
+                    dateList,
+                    true
                 )
                 blogsList.adapter = blogListAdapter
                 val itemTouchHelper = ItemTouchHelper(gestures)

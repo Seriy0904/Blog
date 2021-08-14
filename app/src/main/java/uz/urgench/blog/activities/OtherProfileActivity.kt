@@ -40,6 +40,7 @@ class OtherProfileActivity : AppCompatActivity() {
         userPhoto = findViewById(R.id.other_profile_user_photo)
         swipe_layout = findViewById(R.id.refresh_layout_other_profile)
         userBlogsList = findViewById(R.id.other_profile_list)
+        setSupportActionBar(findViewById(R.id.toolbar_other_profile))
         Firebase.firestore.collection("Accounts").document(selectedUser).get()
             .addOnSuccessListener {
                 userName.text = it.getString("CustomName")
@@ -73,7 +74,8 @@ class OtherProfileActivity : AppCompatActivity() {
                     textNameList,
                     textList,
                     userList,
-                    dateList
+                    dateList,
+                    false
                 )
                 userBlogsList.adapter = userBlogListAdapter
                 progress.visibility = View.GONE

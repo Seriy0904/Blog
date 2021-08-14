@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +7,28 @@
     android:orientation="vertical"
     tools:context=".activities.BlogSelected">
 
+    <FrameLayout
+        android:id="@+id/blog_selected_progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="@color/black"
+        android:elevation="2dp"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
     <include
-        android:id="@+id/blog_toolbar"
+        android:id="@+id/blog_selected_toolbar"
         layout="@layout/toolbar" />
 
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +39,7 @@
             android:scrollbarSize="0dp">
 
             <TextView
-                android:id="@+id/textNameInBlog"
+                android:id="@+id/text_name_in_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blog_recycler_item_drawable"
@@ -33,7 +47,7 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/textInBlog"
+                android:id="@+id/text_in_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
@@ -41,21 +55,21 @@
                 android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/imageInBlog"
+                android:id="@+id/image_in_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
                 android:contentDescription="@string/uploaded_image_blogselected_description" />
 
             <LinearLayout
-                android:id="@+id/userInfoBlogSelected"
+                android:id="@+id/user_info_blog_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blog_recycler_item_drawable"
                 android:gravity="center">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/userPhotoInBlog"
+                    android:id="@+id/user_photo_in_selected"
                     android:layout_width="60sp"
                     android:layout_height="60sp"
                     android:layout_marginVertical="6dp"
@@ -68,7 +82,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/userNameInBlog"
+                        android:id="@+id/username_in_selected"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="6dp"
@@ -76,25 +90,72 @@
                         android:singleLine="true"
                         android:textSize="26sp" />
 
-                    <TextView
-                        android:id="@+id/emailInBlog"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/email_in_selected"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="6dp"
+                        android:elevation="0dp"
                         android:ellipsize="end"
+                        android:gravity="start"
+                        android:padding="4dp"
                         android:singleLine="true"
-                        android:textSize="18sp" />
+                        android:text="@string/subscribe_text"
+                        android:textColor="@color/red"
+                        android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/commentsButtonInBlog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/comment_image"
-                android:contentDescription="@string/comments_description_blogselected" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/like_amount_in_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/comments_button_in_selected"
+                    android:layout_alignBottom="@id/like_button_in_selected"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/like_button_in_selected"
+                    android:gravity="center_vertical"
+                    android:textColor="#353535"
+                    tools:text="42" />
+
+                <ImageButton
+                    android:id="@+id/like_button_in_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_toStartOf="@id/comments_amount_in_selected"
+                    android:background="@drawable/like_selector" />
+
+                <TextView
+                    android:id="@+id/comments_amount_in_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/comments_button_in_selected"
+                    android:layout_alignBottom="@id/like_button_in_selected"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toStartOf="@id/comments_button_in_selected"
+                    android:gravity="center_vertical"
+                    android:textColor="#353535"
+                    tools:text="9" />
+
+                <ImageButton
+                    android:id="@+id/comments_button_in_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginVertical="3dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/comment_image" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -102,7 +163,8 @@
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-</LinearLayout>
+</RelativeLayout>

@@ -5,11 +5,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
@@ -25,7 +23,8 @@ class BlogListAdapter(
     private val textNameList: ArrayList<String>,
     private val textList: ArrayList<String>,
     private var userList: ArrayList<String>,
-    private val dateList: ArrayList<Timestamp>
+    private val dateList: ArrayList<Timestamp>,
+    private val recurse: Boolean
 ) :
     RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,9 +49,11 @@ class BlogListAdapter(
                 startactivity(holder, position, CommentActivity())
             }
             holder.userInfo.setOnClickListener {
-                val userProfileIntent = Intent(it.context,OtherProfileActivity::class.java)
-                userProfileIntent.putExtra("Email",userList[position])
-                it.context.startActivity(userProfileIntent)
+                if (recurse) {
+                    val userProfileIntent = Intent(it.context, OtherProfileActivity::class.java)
+                    userProfileIntent.putExtra("Email", userList[position])
+                    it.context.startActivity(userProfileIntent)
+                }
             }
             var likesList: ArrayList<String> = arrayListOf()
             val blogDir = db.collection("Blog").document(textNameList[position])
@@ -62,28 +63,39 @@ class BlogListAdapter(
                         likesList = doc["LikeList"] as ArrayList<String>
                         holder.likeAmount.text =
                             if (likesList.size == 0) "" else likesList.size.toString()
+                        if (likesList.contains(email))
+                            holder.likeAmount.background = ContextCompat.getDrawable(
+                                holder.likeAmount.context,
+                                R.drawable.like_icon_pressed)
                     }
                     if (doc["AddedPhoto"] != null) {
-                        Glide.with(holder.imageItem.context).load(Uri.parse(doc.getString("AddedPhoto")))
+                        Glide.with(holder.imageItem.context)
+                            .load(Uri.parse(doc.getString("AddedPhoto")))
                             .into((holder.imageItem))
                         holder.imageItem.visibility = View.VISIBLE
 
                     }
                 }
             blogDir.collection("Comments").get().addOnSuccessListener {
-                holder.commentsAmount.text = if(it.size()>0) it.size().toString() else ""
+                holder.commentsAmount.text = if (it.size() > 0) it.size().toString() else ""
             }
-            holder.likeBut.setOnClickListener {
+            holder.likeBut.setOnClickListener {it as Button
                 val mLikeList = likesList
                 if (mLikeList.contains(email)) {
                     mLikeList.remove(email)
                     blogDir.update(mapOf("LikeList" to mLikeList))
-                    holder.likeAmount.text =
+                    it.text =
                         if (mLikeList.size == 0) "" else mLikeList.size.toString()
+                    it.background = ContextCompat.getDrawable(
+                                it.context,
+                                R.drawable.like_icon)
                 } else {
                     mLikeList.add(email)
                     blogDir.update(mapOf("LikeList" to mLikeList))
-                    holder.likeAmount.text = mLikeList.size.toString()
+                    it.text = mLikeList.size.toString()
+                    it.background = ContextCompat.getDrawable(
+                                it.context,
+                                R.drawable.like_icon_pressed)
                 }
             }
             holder.textName.text = textNameList[position]
@@ -111,13 +123,16 @@ class BlogListAdapter(
     private fun startactivity(holder: ViewHolder, position: Int, clas: AppCompatActivity) {
         val intent = Intent(holder.textName.context, clas::class.java)
         intent.putExtra("BlogName", textNameList[position])
+        if (recurse) {
+            intent.putExtra("recurse", true)
+        }
         holder.textName.context.startActivity(intent)
     }
 
     override fun getItemCount() = textNameList.size
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val blogInfo: LinearLayout = itemView.findViewById(R.id.blogInfo)
-        val userInfo:LinearLayout = itemView.findViewById(R.id.userInfo)
+        val userInfo: LinearLayout = itemView.findViewById(R.id.userInfo)
         val imageItem: ImageView = itemView.findViewById(R.id.imageItem)
         val photoUser: ImageView = itemView.findViewById(R.id.userPhoto)
         val textName: TextView = itemView.findViewById(R.id.textName)
