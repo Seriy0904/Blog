@@ -27,8 +27,7 @@
         android:paddingHorizontal="8dp"
         android:paddingVertical="10dp"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:text="Textwddwwdwdsdwdswwdas" />
+        android:textSize="20sp" />
 
     <ImageButton
         android:layout_marginBottom="2dp"

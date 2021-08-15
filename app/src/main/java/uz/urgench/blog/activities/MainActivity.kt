@@ -24,15 +24,23 @@ import uz.urgench.blog.R
 import uz.urgench.blog.databinding.ActivityMainBinding
 import java.lang.reflect.Field
 
+public const val APP_PREFERENCE = "mysettings"
+
+public const val APP_PREFERENCE_THEME = "Theme"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     var onFragment: Short = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
         binding = ActivityMainBinding.inflate(layoutInflater)
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
+        binding.navView.inflateHeaderView(R.layout.nav_header)
+        if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
         setContentView(binding.root)
         setSupportActionBar(binding.mainBar.mainBar)
         val toggle = ActionBarDrawerToggle(
@@ -56,7 +64,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationDrawer = binding.navView.getHeaderView(0)
         Firebase.firestore.collection("Accounts").document(Firebase.auth.currentUser?.email!!).get()
             .addOnSuccessListener {
-                navigationDrawer.findViewById<TextView>(R.id.header_title_username).text = it["CustomName"].toString()
+                navigationDrawer.findViewById<TextView>(R.id.header_title_username).text =
+                    it["CustomName"].toString()
                 navigationDrawer.findViewById<TextView>(R.id.header_title_email).text =
                     Firebase.auth.currentUser?.email
                 Glide.with(this).load(it["CustomPhoto"].toString())
@@ -66,6 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
         findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
+        invalidateOptionsMenu()
     }
 
     private var doubleBackToExitPressedOnce = false
@@ -108,6 +118,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        when(onFragment){
+            (1).toShort()-> findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
+            (2).toShort()-> findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_profile)
+        }
+
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home ->
@@ -117,7 +135,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     onFragment = 1
                     invalidateOptionsMenu()
                 }
-            R.id.nav_chats ->{
+            R.id.nav_chats -> {
+                overridePendingTransition(android.R.anim.fade_out,android.R.anim.fade_in)
                 startActivity(Intent(this, AddBlogActivity::class.java))
             }
             R.id.nav_profile -> {

@@ -35,6 +35,11 @@ class CommentActivity : AppCompatActivity() {
     private lateinit var commentList: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
         setContentView(R.layout.activity_comment_activiy)
         editComment = findViewById(R.id.editComment)
         saveComments = findViewById(R.id.save_comment)
@@ -112,11 +117,11 @@ class CommentActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> super.onBackPressed()
             R.id.backToBlog -> {
-                if (intent.getBooleanExtra("Where",true)){
+                if (intent.getBooleanExtra("Where", true)) {
                     val blogIntent = Intent(this, BlogSelected::class.java)
                     blogIntent.putExtra("BlogName", intent.getStringExtra("BlogName"))
                     startActivity(blogIntent)
-                }else super.onBackPressed()
+                } else super.onBackPressed()
             }
             R.id.replaceList -> putToList()
         }

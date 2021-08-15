@@ -12,6 +12,6 @@
             android:title="@string/menu_add_blog" />
         <item
             android:id="@+id/nav_profile"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_settings" />
     </group>
 </menu>

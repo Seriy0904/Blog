@@ -32,6 +32,11 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var userPhoto: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
         setContentView(R.layout.activity_other_profile)
         selectedUser = intent.getStringExtra("Email").toString()
         userName = findViewById(R.id.other_profile_username)

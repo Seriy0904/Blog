@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ProfileFragment">
+    android:background="?firstColor"
+    tools:context=".ProfileFragment"
+    tools:theme="@style/MainTheme">
 
     <LinearLayout
-        android:id="@+id/userInfoInProfile"
+        android:id="@+id/user_info_in_profile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
         android:layout_alignParentTop="true"
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="220dp"
             android:autofillHints="username"
-            android:inputType="textCapCharacters|text"
+            android:inputType="textCapSentences"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white" />
@@ -52,13 +53,23 @@
             android:text="@string/nav_header_subtitle" />
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/themes_spinner"
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_info_in_profile"
+        android:entries="@array/themes"
+        android:padding="10dp"
+        android:theme="@style/spinner" />
+
     <Button
         android:id="@+id/exit_account"
         style="@style/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userInfoInProfile"
-        android:backgroundTint="@color/light_grey"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/red"
         android:drawableEnd="@drawable/exit_icon"
         android:gravity="start|center_vertical"
         android:text="@string/exit_from_account"

@@ -5,7 +5,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +25,7 @@ import uz.urgench.blog.activities.OtherProfileActivity
 class BlogListAdapter(
     private val textNameList: ArrayList<String>,
     private val textList: ArrayList<String>,
-    private var userList: ArrayList<String>,
+    private val userList: ArrayList<String>,
     private val dateList: ArrayList<Timestamp>,
     private val recurse: Boolean
 ) :
@@ -41,17 +44,20 @@ class BlogListAdapter(
             val email = Firebase.auth.currentUser?.email!!
             holder.blogInfo.setOnClickListener {
                 try {
+                    it.isEnabled = false
                     startactivity(holder, position, BlogSelected())
                 } catch (e: IndexOutOfBoundsException) {
                 }
             }
             holder.comments.setOnClickListener {//CommentsButton
+                it.isEnabled = false
                 startactivity(holder, position, CommentActivity())
             }
+            val userProfileIntent = Intent(holder.userInfo.context, OtherProfileActivity::class.java)
+                    userProfileIntent.putExtra("Email", userList[position])
             holder.userInfo.setOnClickListener {
                 if (recurse) {
-                    val userProfileIntent = Intent(it.context, OtherProfileActivity::class.java)
-                    userProfileIntent.putExtra("Email", userList[position])
+                    it.isEnabled = false
                     it.context.startActivity(userProfileIntent)
                 }
             }
@@ -64,7 +70,7 @@ class BlogListAdapter(
                         holder.likeAmount.text =
                             if (likesList.size == 0) "" else likesList.size.toString()
                         if (likesList.contains(email))
-                            holder.likeAmount.background = ContextCompat.getDrawable(
+                            holder.likeBut.background = ContextCompat.getDrawable(
                                 holder.likeAmount.context,
                                 R.drawable.like_icon_pressed)
                     }
@@ -79,12 +85,12 @@ class BlogListAdapter(
             blogDir.collection("Comments").get().addOnSuccessListener {
                 holder.commentsAmount.text = if (it.size() > 0) it.size().toString() else ""
             }
-            holder.likeBut.setOnClickListener {it as Button
+            holder.likeBut.setOnClickListener {
                 val mLikeList = likesList
                 if (mLikeList.contains(email)) {
                     mLikeList.remove(email)
                     blogDir.update(mapOf("LikeList" to mLikeList))
-                    it.text =
+                    holder.likeAmount.text =
                         if (mLikeList.size == 0) "" else mLikeList.size.toString()
                     it.background = ContextCompat.getDrawable(
                                 it.context,
@@ -92,7 +98,7 @@ class BlogListAdapter(
                 } else {
                     mLikeList.add(email)
                     blogDir.update(mapOf("LikeList" to mLikeList))
-                    it.text = mLikeList.size.toString()
+                    holder.likeAmount.text = mLikeList.size.toString()
                     it.background = ContextCompat.getDrawable(
                                 it.context,
                                 R.drawable.like_icon_pressed)

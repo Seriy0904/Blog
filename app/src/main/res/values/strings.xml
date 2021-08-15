@@ -34,7 +34,7 @@
 
     <string name="menu_home">Главная</string>
     <string name="menu_add_blog">Добавить Блог</string>
-    <string name="menu_slideshow">Мой Профиль</string>
+    <string name="menu_settings">Настройки</string>
     <string name="subscribe_text">ПОДПИСАТЬСЯ</string>
     <string name="save_changes_in_profile">SAVE_CHANGES</string>
     <string name="exit_from_account">Выйти из аккаунта</string>
@@ -45,4 +45,9 @@
     <string name="uploaded_image_blogselected_description">UPLOADED_IMAGE</string>
     <string name="user_photo_in_blogselected">USER_PHOTO</string>
     <string name="comments_description_blogselected">COMMENTS</string>
+
+    <string-array name="themes">
+        <item>Тема по умолчнию</item>
+        <item>Устаревшая тема</item>
+    </string-array>
 </resources>

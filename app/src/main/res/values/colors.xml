@@ -14,12 +14,12 @@
     <color name="light_purple">#b078fa</color>
     <color name="purple">#603896</color>
 <!--    Два основных цвета-->
-    <color name="blue_and_purple">#7546D7</color>
-    <color name="background_main">#4512AE</color>
+    <color name="blue_and_purple">#3f4375</color>
+    <color name="background_main">#272949</color>
 
 <!--    Два основны цвета второй темы-->
     <color name="blue_and_purple_two">#7546D7</color>
     <color name="background_main_two">#4512AE</color>
 
-    <color name="background_for_add_fragment">#6a79eb</color>
+    <color name="background_for_add_fragm">#6a79eb</color>
 </resources>

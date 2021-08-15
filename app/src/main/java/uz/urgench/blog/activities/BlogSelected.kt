@@ -23,14 +23,18 @@ class BlogSelected : AppCompatActivity() {
     private lateinit var userPhoto: ImageView
     private lateinit var userName: TextView
     private lateinit var add: AdView
-    private lateinit var progressBar:FrameLayout
     private lateinit var userInfo: LinearLayout
     private lateinit var commentBut: ImageButton
     private lateinit var commentAmount: TextView
-    private lateinit var likeButton: Button
+    private lateinit var likeButton: ImageButton
     private lateinit var likeAmount: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
         setContentView(R.layout.activity_blog_selected)
         var likesList: ArrayList<String> = arrayListOf()
         commentBut = findViewById(R.id.comments_button_in_selected)
@@ -43,6 +47,9 @@ class BlogSelected : AppCompatActivity() {
         commentAmount = findViewById(R.id.comments_amount_in_selected)
         likeAmount = findViewById(R.id.like_amount_in_selected)
         likeButton = findViewById(R.id.like_button_in_selected)
+        setSupportActionBar(findViewById(R.id.blog_selected_toolbar))
+        supportActionBar?.subtitle = intent.getStringExtra("BlogName")!!
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val email = Firebase.auth.currentUser?.email
         val act = Intent(this, CommentActivity::class.java)
         act.putExtra("BlogName", intent.getStringExtra("BlogName")).putExtra("Where", false)
@@ -52,9 +59,6 @@ class BlogSelected : AppCompatActivity() {
         val blogDir =
             Firebase.firestore.collection("Blog").document(intent.getStringExtra("BlogName")!!)
         val getExtra = intent.getStringExtra("BlogName")!!
-        setSupportActionBar(findViewById(R.id.blog_selected_toolbar))
-        supportActionBar?.subtitle = getExtra
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         blogDir.get()
             .addOnSuccessListener { doc ->
                 userInfo.setOnClickListener {
@@ -71,7 +75,7 @@ class BlogSelected : AppCompatActivity() {
                     likeAmount.text =
                         if (likesList.size == 0) "" else likesList.size.toString()
                     if (likesList.contains(email))
-                        likeAmount.background = ContextCompat.getDrawable(
+                        likeButton.background = ContextCompat.getDrawable(
                             this,
                             R.drawable.like_icon_pressed
                         )
@@ -96,16 +100,14 @@ class BlogSelected : AppCompatActivity() {
                     gallery.setDataAndType(Uri.parse(url), "image/*")
                     startActivity(gallery)
                 }
-                findViewById<FrameLayout>(R.id.blog_selected_progressbar).visibility = View.GONE
             }
 
-        likeButton.setOnClickListener {
-            it as Button
+        likeButton.setOnClickListener { it
             val mLikeList = likesList
             if (mLikeList.contains(email)) {
                 mLikeList.remove(email)
                 blogDir.update(mapOf("LikeList" to mLikeList))
-                it.text =
+                likeAmount.text =
                     if (mLikeList.size == 0) "" else mLikeList.size.toString()
                 it.background = ContextCompat.getDrawable(
                     this,
@@ -114,7 +116,7 @@ class BlogSelected : AppCompatActivity() {
             } else {
                 mLikeList.add(email!!)
                 blogDir.update(mapOf("LikeList" to mLikeList))
-                it.text = mLikeList.size.toString()
+                likeAmount.text = mLikeList.size.toString()
                 it.background = ContextCompat.getDrawable(
                     this,
                     R.drawable.like_icon_pressed

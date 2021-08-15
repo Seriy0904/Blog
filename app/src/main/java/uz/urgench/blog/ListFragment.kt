@@ -35,6 +35,7 @@ class ListFragment : Fragment() {
         putToList()
         swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purple))
         swipe_layout.setOnRefreshListener {
+            blogsList.adapter = null
             putToList()
         }
     }
@@ -61,9 +62,9 @@ class ListFragment : Fragment() {
                     dateList,
                     true
                 )
-                blogsList.adapter = blogListAdapter
                 val itemTouchHelper = ItemTouchHelper(gestures)
                 itemTouchHelper.attachToRecyclerView(blogsList)
+                blogsList.adapter = blogListAdapter
                 swipe_layout.isRefreshing = false
             }
     }

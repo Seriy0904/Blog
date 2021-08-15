@@ -29,6 +29,11 @@ class AddBlogActivity : AppCompatActivity() {
     private val IMAGE_REQUEST = 65
     private val currentUser = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_blog)
         setSupportActionBar(findViewById(R.id.addBlogToolbar))

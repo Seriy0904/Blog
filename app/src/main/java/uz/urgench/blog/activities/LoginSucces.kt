@@ -25,6 +25,11 @@ class LoginSucces : AppCompatActivity() {
     private lateinit var reg_btn: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
+            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+                1->R.style.OldTheme
+                else -> R.style.MainTheme
+            })
         setContentView(R.layout.activity_login_succes)
         auth = Firebase.auth
         val currentUser = auth.currentUser
@@ -64,7 +69,7 @@ class LoginSucces : AppCompatActivity() {
                 .get().addOnSuccessListener {
                     if (it["CustomName"] == null) {
                         Firebase.firestore.collection("Accounts")
-                            .document("sirojiddin.nuraddinov@gmail.com")
+                            .document(userInfo.email!!)
                             .set(
                                 hashMapOf(
                                     "CustomName" to userInfo.displayName!!,
@@ -73,7 +78,7 @@ class LoginSucces : AppCompatActivity() {
                             ).addOnSuccessListener { startActivity(intent) }
                     }else if(it["CustomPhoto"] == null){
                         Firebase.firestore.collection("Accounts")
-                            .document("sirojiddin.nuraddinov@gmail.com")
+                            .document(userInfo.email!!)
                             .update(
                                 mapOf("CustomPhoto" to userInfo.photoUrl!!.toString())
                             ).addOnSuccessListener { startActivity(intent) }

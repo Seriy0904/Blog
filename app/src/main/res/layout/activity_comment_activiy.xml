@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_and_purple"
+    android:background="?firstColor"
+    tools:theme="@style/MainTheme"
     android:orientation="vertical"
     tools:context=".activities.CommentActivity">
 

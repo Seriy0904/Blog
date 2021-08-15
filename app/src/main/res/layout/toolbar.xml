@@ -3,5 +3,6 @@
     android:id="@+id/main_bar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
+    android:background="#494d82"
+    android:elevation="4dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
