@@ -1,7 +1,6 @@
 package uz.urgench.blog
 
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ class BlogListAdapter(
     private val textList: ArrayList<String>,
     private val userList: ArrayList<String>,
     private val dateList: ArrayList<Timestamp>,
+    private val uriList: ArrayList<String?>,
     private val recurse: Boolean
 ) :
     RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
@@ -37,6 +37,13 @@ class BlogListAdapter(
         )
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
     private val db = Firebase.firestore
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -44,22 +51,27 @@ class BlogListAdapter(
             val email = Firebase.auth.currentUser?.email!!
             holder.blogInfo.setOnClickListener {
                 try {
-                    it.isEnabled = false
                     startactivity(holder, position, BlogSelected())
                 } catch (e: IndexOutOfBoundsException) {
                 }
             }
             holder.comments.setOnClickListener {//CommentsButton
-                it.isEnabled = false
                 startactivity(holder, position, CommentActivity())
             }
-            val userProfileIntent = Intent(holder.userInfo.context, OtherProfileActivity::class.java)
-                    userProfileIntent.putExtra("Email", userList[position])
             holder.userInfo.setOnClickListener {
                 if (recurse) {
-                    it.isEnabled = false
+                    val userProfileIntent =
+                        Intent(holder.userInfo.context, OtherProfileActivity::class.java)
+                    userProfileIntent.putExtra("Email", userList[position])
+                    userProfileIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     it.context.startActivity(userProfileIntent)
                 }
+            }
+            holder.imageItem.visibility = View.GONE
+            if (uriList[position] != null) {
+                Glide.with(holder.imageItem.context).load(uriList[position])
+                    .into((holder.imageItem))
+                holder.imageItem.visibility = View.VISIBLE
             }
             var likesList: ArrayList<String> = arrayListOf()
             val blogDir = db.collection("Blog").document(textNameList[position])
@@ -72,19 +84,14 @@ class BlogListAdapter(
                         if (likesList.contains(email))
                             holder.likeBut.background = ContextCompat.getDrawable(
                                 holder.likeAmount.context,
-                                R.drawable.like_icon_pressed)
-                    }
-                    if (doc["AddedPhoto"] != null) {
-                        Glide.with(holder.imageItem.context)
-                            .load(Uri.parse(doc.getString("AddedPhoto")))
-                            .into((holder.imageItem))
-                        holder.imageItem.visibility = View.VISIBLE
-
+                                R.drawable.like_icon_pressed
+                            )
+                        doc.reference.collection("Comments").get().addOnSuccessListener {
+                            holder.commentsAmount.text =
+                                if (it.size() > 0) it.size().toString() else ""
+                        }
                     }
                 }
-            blogDir.collection("Comments").get().addOnSuccessListener {
-                holder.commentsAmount.text = if (it.size() > 0) it.size().toString() else ""
-            }
             holder.likeBut.setOnClickListener {
                 val mLikeList = likesList
                 if (mLikeList.contains(email)) {
@@ -93,15 +100,17 @@ class BlogListAdapter(
                     holder.likeAmount.text =
                         if (mLikeList.size == 0) "" else mLikeList.size.toString()
                     it.background = ContextCompat.getDrawable(
-                                it.context,
-                                R.drawable.like_icon)
+                        it.context,
+                        R.drawable.like_icon
+                    )
                 } else {
                     mLikeList.add(email)
                     blogDir.update(mapOf("LikeList" to mLikeList))
                     holder.likeAmount.text = mLikeList.size.toString()
                     it.background = ContextCompat.getDrawable(
-                                it.context,
-                                R.drawable.like_icon_pressed)
+                        it.context,
+                        R.drawable.like_icon_pressed
+                    )
                 }
             }
             holder.textName.text = textNameList[position]
@@ -129,9 +138,8 @@ class BlogListAdapter(
     private fun startactivity(holder: ViewHolder, position: Int, clas: AppCompatActivity) {
         val intent = Intent(holder.textName.context, clas::class.java)
         intent.putExtra("BlogName", textNameList[position])
-        if (recurse) {
-            intent.putExtra("recurse", true)
-        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.putExtra("recurse", true)
         holder.textName.context.startActivity(intent)
     }
 

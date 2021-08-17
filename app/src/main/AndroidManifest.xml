@@ -15,9 +15,9 @@
         <activity
             android:name=".activities.OtherProfileActivity"
             android:exported="true" />
-        <activity android:name=".activities.CommentActivity" />
-        <activity android:name=".activities.AddBlogActivity" />
-        <activity android:name=".activities.BlogSelected" />
+        <activity android:name=".activities.CommentActivity"/>
+        <activity android:name=".activities.AddBlogActivity"/>
+        <activity android:name=".activities.BlogSelected"/>
         <activity
             android:name=".activities.LoginSucces"
             android:label="@string/title_activity_login_succes"

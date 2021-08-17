@@ -93,7 +93,7 @@
                         android:textSize="26sp" />
 
                     <Button
-                        android:id="@+id/email_in_selected"
+                        android:id="@+id/subscribe_in_selected"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

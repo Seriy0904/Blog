@@ -13,7 +13,8 @@
         android:alpha="0.5"
         android:background="@color/black"
         android:elevation="2dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -22,40 +23,41 @@
     </FrameLayout>
 
     <include
-        layout="@layout/toolbar"
-        android:id="@+id/toolbar_other_profile"/>
+        android:id="@+id/toolbar_other_profile"
+        layout="@layout/toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout_other_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_other_profile">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background_main">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/other_profile_header"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/nav_header_height"
-                    android:layout_alignParentTop="true"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/side_nav_bar"
                     android:gravity="bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+                    tools:theme="@style/ThemeOverlay.AppCompat.Dark">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/other_profile_user_photo"
-                        android:layout_width="80sp"
-                        android:layout_height="80sp"
+                        android:layout_width="90sp"
+                        android:layout_height="90sp"
+                        android:layout_marginTop="10dp"
                         android:contentDescription="@string/nav_header_desc"
                         android:paddingTop="@dimen/nav_header_vertical_spacing" />
 
@@ -63,24 +65,46 @@
                         android:id="@+id/other_profile_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="220dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_toEndOf="@id/other_profile_user_photo"
                         android:paddingTop="@dimen/nav_header_vertical_spacing"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:id="@+id/other_profile_user_email"
+                        android:id="@+id/other_profile_subscribers_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/nav_header_subtitle" />
-                </LinearLayout>
+                        android:layout_below="@id/other_profile_username"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_toEndOf="@id/other_profile_user_photo"
+                        tools:text="43221343 подписчиков" />
+
+                    <Button
+                        android:id="@+id/subscribe_in_other_profile"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35sp"
+                        android:layout_below="@id/other_profile_subscribers_amount"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_toEndOf="@id/other_profile_user_photo"
+                        android:elevation="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:singleLine="true"
+                        android:text="@string/subscribe_text"
+                        android:textColor="@color/red"
+                        android:textSize="20sp" />
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/other_profile_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/other_profile_header"
                     tools:listitem="@layout/blog_recycler_item" />
-            </LinearLayout>
+            </RelativeLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

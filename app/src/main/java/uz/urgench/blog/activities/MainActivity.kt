@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.customview.widget.ViewDragHelper
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
@@ -30,6 +31,7 @@ public const val APP_PREFERENCE_THEME = "Theme"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
+    private val mListFragment = ListFragment()
     var onFragment: Short = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         toggle.syncState()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+            .replace(R.id.fragmentContainerView, mListFragment, null).commit()
         findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
         invalidateOptionsMenu()
     }
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return
         } else if (onFragment == (2).toShort()) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+                .replace(R.id.fragmentContainerView, mListFragment, null).commit()
             onFragment = 1
             findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
             return
@@ -112,8 +114,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.replaceList -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+            R.id.replaceList -> mListFragment.putToList()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home ->
                 if (onFragment != (1).toShort()) {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, ListFragment(), null).commit()
+                        .replace(R.id.fragmentContainerView, mListFragment, null).commit()
                     onFragment = 1
                     invalidateOptionsMenu()
                 }
@@ -140,9 +141,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, AddBlogActivity::class.java))
             }
             R.id.nav_profile -> {
-                if (onFragment != (2).toShort())
+                if (onFragment != (2).toShort()){
+                    findViewById<RecyclerView>(R.id.list).adapter = null
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, ProfileFragment(), null).commit()
+                        .replace(R.id.fragmentContainerView, ProfileFragment(), null).commit()}
                 onFragment = 2
                 invalidateOptionsMenu()
             }

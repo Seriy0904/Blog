@@ -18,11 +18,8 @@
     <!--String formating Date-->
     <string name="date">%04d/%02d/%02d  %02d:%02d</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="content_description_registrtion">GOOGLE REGISTRATION</string>
     <string name="update_list_description">UPDATE LIST</string>
-    <string name="title_activity_test">TestActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
@@ -32,6 +29,9 @@
     <string name="drawer_navigation_close">Close navigation drawer</string>
 
 
+    <string name="default_subscribe_text">%d подписчиков</string>
+    <string name="second_subscribe_text">%d подписчика</string>
+    <string name="first_subscribe_text">%d подписчик</string>
     <string name="menu_home">Главная</string>
     <string name="menu_add_blog">Добавить Блог</string>
     <string name="menu_settings">Настройки</string>

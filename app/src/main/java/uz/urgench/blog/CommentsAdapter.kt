@@ -1,6 +1,7 @@
 package uz.urgench.blog
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import uz.urgench.blog.activities.CommentActivity
+import uz.urgench.blog.activities.OtherProfileActivity
 
 class CommentsAdapter(
     private val commentUserList: ArrayList<String>,
@@ -20,11 +22,12 @@ class CommentsAdapter(
     private val commentDateList: ArrayList<Timestamp>?,
     private val context: CommentActivity
 ) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+       return ViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.coment_items, parent, false)
         )
+    }
 
     override fun getItemCount() = commentUserList.size
     private val db = Firebase.firestore
@@ -53,6 +56,14 @@ class CommentsAdapter(
                 if (it["CommentUser"] == Firebase.auth.currentUser?.email)
                     holder.more.visibility = View.VISIBLE
             }
+        holder.userPhoto.setOnClickListener {
+            it.context.startActivity(
+                Intent(
+                    it.context,
+                    OtherProfileActivity::class.java
+                ).putExtra("Email",commentUserList[position])
+            )
+        }
         holder.more.setOnClickListener {
             val popupMenu = PopupMenu(context, it)
             popupMenu.inflate(R.menu.comment_popup)

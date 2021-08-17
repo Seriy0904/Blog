@@ -25,6 +25,7 @@ class ListFragment : Fragment() {
     private val textNameList: ArrayList<String> = arrayListOf()
     private val userList: ArrayList<String> = arrayListOf()
     private val dateList: ArrayList<Timestamp> = arrayListOf()
+    private val uriList: ArrayList<String?> = arrayListOf()
     private lateinit var blogListAdapter: BlogListAdapter
     private lateinit var swipe_layout: SwipeRefreshLayout
     private lateinit var blogsList: RecyclerView
@@ -35,16 +36,17 @@ class ListFragment : Fragment() {
         putToList()
         swipe_layout.setColorSchemeColors(resources.getColor(R.color.blue_and_purple))
         swipe_layout.setOnRefreshListener {
-            blogsList.adapter = null
             putToList()
         }
     }
 
-    private fun putToList() {
+    fun putToList() {
+        blogsList.adapter = null
         textList.clear()
         textNameList.clear()
         userList.clear()
         dateList.clear()
+        uriList.clear()
         val db = Firebase.firestore
         db.collection("Blog").get()
             .addOnSuccessListener { documents ->
@@ -52,6 +54,7 @@ class ListFragment : Fragment() {
                     textNameList.add(document.id)
                     textList.add(document.get("Text").toString())
                     userList.add(document.get("UserName").toString())
+                    uriList.add(document.getString("AddedPhoto"))
                     dateList.add(document.get("Date") as Timestamp)
                 }
                 blogsList.layoutManager = LinearLayoutManager(activity)
@@ -60,15 +63,16 @@ class ListFragment : Fragment() {
                     textList,
                     userList,
                     dateList,
+                    uriList,
                     true
                 )
                 val itemTouchHelper = ItemTouchHelper(gestures)
                 itemTouchHelper.attachToRecyclerView(blogsList)
+                blogListAdapter.setHasStableIds(true)
                 blogsList.adapter = blogListAdapter
                 swipe_layout.isRefreshing = false
             }
     }
-
     private val gestures = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         override fun onMove(
             recyclerView: RecyclerView,
