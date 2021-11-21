@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "uz.urgench.blog"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "0.98"
@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.android.gms:play-services-auth'
-    implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics'

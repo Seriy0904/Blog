@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Sirojiddin/StudioProjects/Blog/app/src/main/res/layout/activity_main.xml" value="0.371875" />
+        <entry key="..\:/Users/Sirojiddin/StudioProjects/Blog/app/src/main/res/layout/activity_other_profile.xml" value="0.36615384615384616" />
+        <entry key="..\:/Users/Sirojiddin/StudioProjects/Blog/app/src/main/res/layout/coment_items.xml" value="0.36615384615384616" />
+        <entry key="..\:/Users/Sirojiddin/StudioProjects/Blog/app/src/main/res/layout/toolbar.xml" value="0.371875" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/blog_recycler_item_drawable.xml" value="0.24267100977198697" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/button_selector.xml" value="0.2450657894736842" />
         <entry key="..\:/Users/User/AndroidStudioProjects/Blog/app/src/main/res/drawable/like_icon.xml" value="0.24267100977198697" />

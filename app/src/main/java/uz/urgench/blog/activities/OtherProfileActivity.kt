@@ -17,24 +17,22 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import uz.urgench.blog.BlogListAdapter
+import uz.urgench.blog.adapters.BlogListAdapter
 import uz.urgench.blog.R
+import uz.urgench.blog.adapters.BlogModel
 
 class OtherProfileActivity : AppCompatActivity() {
-    private val textList: ArrayList<String> = arrayListOf()
-    private val textNameList: ArrayList<String> = arrayListOf()
-    private val userList: ArrayList<String> = arrayListOf()
-    private val dateList: ArrayList<Timestamp> = arrayListOf()
-    private val uriList: ArrayList<String?> = arrayListOf()
-    private var userBlogListAdapter: BlogListAdapter? = null
-    private lateinit var userBlogsList: RecyclerView
-    private lateinit var swipe_layout: SwipeRefreshLayout
-    private lateinit var selectedUser: String
-    private lateinit var userName: TextView
-    private lateinit var subscribersAmount: TextView
-    private lateinit var progress: FrameLayout
-    private lateinit var userPhoto: ImageView
-    private lateinit var subscribeButton: Button
+    private val blogList = arrayListOf<BlogModel>()
+    private val userBlogListAdapter = BlogListAdapter(false)
+    private val userBlogsList: RecyclerView by lazy { findViewById(R.id.other_profile_list) }
+    private val swipeLayout: SwipeRefreshLayout by lazy { findViewById(R.id.refresh_layout_other_profile) }
+    private val selectedUser: String by lazy { intent.getStringExtra("Email").toString() }
+    private val userName: TextView by lazy { findViewById(R.id.other_profile_username) }
+    private val subscribersAmount: TextView by lazy { findViewById(R.id.other_profile_subscribers_amount) }
+    private val progress: FrameLayout by lazy { findViewById(R.id.other_profile_progressbar) }
+    private val userPhoto: ImageView by lazy { findViewById(R.id.other_profile_user_photo) }
+    private val subscribeButton: Button by lazy { findViewById(R.id.subscribe_in_other_profile) }
+    private val subscribers = arrayListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
@@ -45,101 +43,95 @@ class OtherProfileActivity : AppCompatActivity() {
             }
         )
         setContentView(R.layout.activity_other_profile)
-        selectedUser = intent.getStringExtra("Email").toString()
-        userName = findViewById(R.id.other_profile_username)
-        subscribeButton = findViewById(R.id.subscribe_in_other_profile)
-        progress = findViewById(R.id.other_profile_progressbar)
-        subscribersAmount = findViewById(R.id.other_profile_subscribers_amount)
-        userPhoto = findViewById(R.id.other_profile_user_photo)
-        swipe_layout = findViewById(R.id.refresh_layout_other_profile)
-        userBlogsList = findViewById(R.id.other_profile_list)
         setSupportActionBar(findViewById(R.id.toolbar_other_profile))
-        var subscribers = arrayListOf<String>()
+        userBlogsList.layoutManager = LinearLayoutManager(this)
+        userBlogsList.adapter = userBlogListAdapter
+        getSubscribers()
+        subscribeButton.setOnClickListener {
+            if (!subscribers.contains(Firebase.auth.currentUser?.email!!)) {
+                subscribers.add(Firebase.auth.currentUser?.email!!)
+                subscribe()
+            } else {
+                subscribers.remove(Firebase.auth.currentUser?.email!!)
+                subscribe(true)
+            }
+        }
+        swipeLayout.setOnRefreshListener {
+            getSubscribers()
+        }
+    }
+
+    private fun updateSubscribers() {
+        Firebase.firestore.collection("Accounts").document(selectedUser)
+            .update(mapOf("SubscribersList" to subscribers)).addOnSuccessListener {
+                pasteTrueWord(subscribers)
+            }
+    }
+
+    private fun getSubscribers() {
         Firebase.firestore.collection("Accounts").document(selectedUser).get()
             .addOnSuccessListener {
                 userName.text = it.getString("CustomName")
                 Glide.with(this).load(Uri.parse(it.getString("CustomPhoto"))).into(userPhoto)
                 if (it["SubscribersList"] != null) {
-                    subscribers = it["SubscribersList"] as ArrayList<String>
+                    subscribers.clear()
+                    subscribers.addAll(it["SubscribersList"] as ArrayList<String>)
                     pasteTrueWord(subscribers)
+                    subscribe(true)
                 }
             }
-        subscribeButton.setOnClickListener {
-            if (!subscribers.contains(Firebase.auth.currentUser?.email!!)) {
-                subscribers.add(Firebase.auth.currentUser?.email!!)
-                Firebase.firestore.collection("Accounts").document(selectedUser)
-                    .update(mapOf("SubscribersList" to subscribers)).addOnSuccessListener {
-                        pasteTrueWord(subscribers)
-                    }
-            } else {
-                subscribers.remove(Firebase.auth.currentUser?.email!!)
-                Firebase.firestore.collection("Accounts").document(selectedUser)
-                    .update(mapOf("SubscribersList" to subscribers)).addOnSuccessListener {
-                        pasteTrueWord(subscribers)
-                    }
-            }
-        }
         putToList()
-        swipe_layout.setOnRefreshListener {
-            Firebase.firestore.collection("Accounts").document(selectedUser).get()
-            .addOnSuccessListener {
-                userName.text = it.getString("CustomName")
-                Glide.with(this).load(Uri.parse(it.getString("CustomPhoto"))).into(userPhoto)
-                if (it["SubscribersList"] != null) {
-                    subscribers = it["SubscribersList"] as ArrayList<String>
-                    pasteTrueWord(subscribers)
-                }
-            }
-            putToList()
-        }
+    }
+
+    override fun onStop() {
+        updateSubscribers()
+        super.onStop()
     }
 
     private fun pasteTrueWord(subscribers: ArrayList<String>) {
-        val lastSymbols = "0${subscribers.size}".substring(subscribers.size.toString().length - 1)
-        if (lastSymbols.first() != '1' && lastSymbols[1].digitToInt() in 2 until 4)
+//        val lastSymbols = "0${subscribers.size}".substring(subscribers.size.toString().length - 1)
+        val lastSymbols = "0${subscribers.size}"
+        if (lastSymbols[lastSymbols.length - 1] != '1' && lastSymbols.last().digitToInt() in 2 until 4)
             subscribersAmount.text =
                 getString(R.string.second_subscribe_text, subscribers.size)
-        else if (lastSymbols != "11" && lastSymbols.last() != '1'){
-                Log.d("MyTag", "Subscribers ${lastSymbols[1].code}")
+        else if (lastSymbols.substring(lastSymbols.length-2) != "11" && lastSymbols.last() != '1') {
             subscribersAmount.text =
-                getString(R.string.default_subscribe_text, subscribers.size)}
-        else
+                getString(R.string.default_subscribe_text, subscribers.size)
+        } else
             subscribersAmount.text =
                 getString(R.string.first_subscribe_text, subscribers.size)
     }
 
+    private fun subscribe(unsubscribe: Boolean = false) {
+        if (unsubscribe) {
+            subscribeButton.setTextColor(resources.getColor(R.color.red))
+            subscribeButton.text = "ПОДПИСАТЬСЯ"
+        } else {
+            subscribeButton.setTextColor(resources.getColor(R.color.grey))
+            subscribeButton.text = "ВЫ ПОДПИСАНЫ"
+        }
+        pasteTrueWord(subscribers)
+    }
+
     private fun putToList() {
-        userBlogListAdapter = null
-        textList.clear()
-        textNameList.clear()
-        userList.clear()
-        dateList.clear()
-        uriList.clear()
         val db = Firebase.firestore
-        db.collection("Blog").get()
+        blogList.clear()
+        db.collection("Blog").whereEqualTo("UserName", selectedUser).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    if (document.getString("UserName") == selectedUser) {
-                        textNameList.add(document.id)
-                        textList.add(document.get("Text").toString())
-                        userList.add(selectedUser)
-                        uriList.add(document.getString("AddedPhoto"))
-                        dateList.add(document.get("Date") as Timestamp)
-                    }
+                    blogList.add(
+                        BlogModel(
+                            textName = document.id,
+                            text = document.get("Text").toString(),
+                            user = selectedUser,
+                            date = document.get("Date") as Timestamp,
+                            uri = document.getString("AddedPhoto")
+                        )
+                    )
                 }
-                userBlogsList.layoutManager = LinearLayoutManager(this)
-                userBlogListAdapter = BlogListAdapter(
-                    textNameList,
-                    textList,
-                    userList,
-                    dateList,
-                    uriList,
-                    false
-                )
-                userBlogsList.adapter = userBlogListAdapter
                 progress.visibility = View.GONE
-                swipe_layout.isRefreshing = false
-
+                swipeLayout.isRefreshing = false
+                userBlogListAdapter.setList(blogList)
             }
     }
 }

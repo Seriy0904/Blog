@@ -40,7 +40,7 @@ class LoginSucces : AppCompatActivity() {
         }
         updateUI(currentUser)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken("722083836199-h7bff22bi9j0ith5n80ouqls4f6abnpa.apps.googleusercontent.com")
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -58,6 +58,7 @@ class LoginSucces : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
+                Log.d("MyTag","Error: ${e.localizedMessage}")
             }
         }
     }

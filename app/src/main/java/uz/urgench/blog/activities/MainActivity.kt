@@ -19,15 +19,14 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import uz.urgench.blog.ListFragment
-import uz.urgench.blog.ProfileFragment
+import uz.urgench.blog.fragments.ListFragment
+import uz.urgench.blog.fragments.ProfileFragment
 import uz.urgench.blog.R
 import uz.urgench.blog.databinding.ActivityMainBinding
 import java.lang.reflect.Field
 
-public const val APP_PREFERENCE = "mysettings"
-
-public const val APP_PREFERENCE_THEME = "Theme"
+const val APP_PREFERENCE = "mysettings"
+const val APP_PREFERENCE_THEME = "Theme"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -37,10 +36,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
-            setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
-                1->R.style.OldTheme
-                else -> R.style.MainTheme
-            })
+        setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
+            1->R.style.OldTheme
+            else -> R.style.MainTheme
+        })
         binding.navView.inflateHeaderView(R.layout.nav_header)
         if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
         setContentView(binding.root)
