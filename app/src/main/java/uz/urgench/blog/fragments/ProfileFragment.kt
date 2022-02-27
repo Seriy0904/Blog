@@ -1,6 +1,7 @@
 package uz.urgench.blog.fragments
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -21,10 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import uz.urgench.blog.R
-import uz.urgench.blog.activities.APP_PREFERENCE
-import uz.urgench.blog.activities.APP_PREFERENCE_THEME
-import uz.urgench.blog.activities.LoginSucces
-import uz.urgench.blog.activities.MainActivity
+import uz.urgench.blog.activities.*
 import uz.urgench.blog.databinding.ActivityMainBinding
 import java.io.ByteArrayOutputStream
 
@@ -37,12 +35,13 @@ class ProfileFragment : Fragment() {
     private lateinit var exit: Button
     private lateinit var saveName: ImageButton
     private lateinit var spinnerThemes: Spinner
+    private lateinit var myBlogsButton: TextView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val auth = Firebase.auth.currentUser
         val db = Firebase.firestore.collection("Accounts").document(auth?.email!!)
-        val newPhoto = false
-        val sp = activity?.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE)
+        val sp = requireActivity().getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE)
+        myBlogsButton = view.findViewById(R.id.my_blogs)
         spinnerThemes = view.findViewById(R.id.themes_spinner)
         userName = view.findViewById(R.id.header_title_username_profile)
         userEmail = view.findViewById(R.id.header_title_email_profile)
@@ -57,17 +56,26 @@ class ProfileFragment : Fragment() {
         }
         userEmail.text = auth.email
         exit.setOnClickListener {
-            if (activity != null) {
-                FirebaseAuth.getInstance().signOut()
-                GoogleSignIn.getClient(
-                    requireActivity(),
-                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-                ).signOut()
-                startActivity(Intent(activity, LoginSucces::class.java))
-            }
+            AlertDialog.Builder(requireContext())
+                .setTitle("Вы уверены что хотите выйти из аккаунта?")
+                .setNeutralButton("Да, уверен"){_,_ ->
+                    FirebaseAuth.getInstance().signOut()
+                    GoogleSignIn.getClient(
+                        requireActivity(),
+                        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                    ).signOut()
+                    startActivity(Intent(activity, LoginSucces::class.java))
+                }.setNegativeButton("Отмена"){_,_->
+                }.create().show()
+        }
+        myBlogsButton.setOnClickListener {
+            val myBlogs = Intent(requireContext(), OtherProfileActivity::class.java)
+            myBlogs.putExtra("myProfile", true)
+            myBlogs.putExtra("Email", Firebase.auth.currentUser?.email)
+            startActivity(myBlogs)
         }
         userName.addTextChangedListener {
-            if (oldName != it.toString() || newPhoto)
+            if (oldName != it.toString())
                 saveName.visibility = View.VISIBLE
             else if (oldName == it.toString() || it.toString() == "$oldName ")
                 saveName.visibility = View.GONE
@@ -91,7 +99,7 @@ class ProfileFragment : Fragment() {
                     Firebase.firestore.collection("Accounts")
                         .document(Firebase.auth.currentUser?.email!!)
                         .update(mapOf("CustomPhoto" to uri.toString())).addOnSuccessListener {
-                            startActivity(Intent(activity,MainActivity::class.java))
+                            startActivity(Intent(activity, MainActivity::class.java))
                             activity?.finish()
                         }
                 }
@@ -108,7 +116,10 @@ class ProfileFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                saveName.visibility = View.VISIBLE
+                if (position == sp.getInt(APP_PREFERENCE_THEME, 0))
+                    saveName.visibility = View.GONE
+                else
+                    saveName.visibility = View.VISIBLE
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -134,7 +145,5 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_profile, container, false)
 }

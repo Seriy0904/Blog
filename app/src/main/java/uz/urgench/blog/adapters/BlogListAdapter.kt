@@ -1,15 +1,12 @@
 package uz.urgench.blog.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,9 +17,6 @@ import uz.urgench.blog.R
 import uz.urgench.blog.activities.BlogSelected
 import uz.urgench.blog.activities.CommentActivity
 import uz.urgench.blog.activities.OtherProfileActivity
-import java.lang.reflect.Type
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class BlogListAdapter(
@@ -55,16 +49,16 @@ class BlogListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val nmodel = blogModelList[position]
         val email = Firebase.auth.currentUser?.email!!
-        holder.blogInfo.setOnClickListener {
+        holder.itemView.setOnClickListener {
                 startactivity(holder, position, BlogSelected::class.java)
         }
         holder.comments.setOnClickListener {//CommentsButton
             startactivity(holder, position, CommentActivity::class.java)
         }
-        holder.userInfo.setOnClickListener {
+        holder.photoUser.setOnClickListener {
             if (recurse) {
                 val userProfileIntent =
-                    Intent(holder.userInfo.context, OtherProfileActivity::class.java)
+                    Intent(it.context, OtherProfileActivity::class.java)
                 userProfileIntent.putExtra("Email", nmodel.user)
                 userProfileIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 it.context.startActivity(userProfileIntent)
@@ -147,8 +141,6 @@ class BlogListAdapter(
 
     override fun getItemCount() = blogModelList.size
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val blogInfo: LinearLayout = itemView.findViewById(R.id.blogInfo)
-        val userInfo: LinearLayout = itemView.findViewById(R.id.userInfo)
         val imageItem: ImageView = itemView.findViewById(R.id.imageItem)
         val photoUser: ImageView = itemView.findViewById(R.id.userPhoto)
         val textName: TextView = itemView.findViewById(R.id.textName)

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -31,15 +32,18 @@ const val APP_PREFERENCE_THEME = "Theme"
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private val mListFragment = ListFragment()
-    var onFragment: Short = 1
+    private val mProfileFragment = ProfileFragment()
+    private var profileFragmentActive = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val sp = getSharedPreferences(APP_PREFERENCE, MODE_PRIVATE)
-        setTheme(when(sp.getInt(APP_PREFERENCE_THEME,0)){
-            1->R.style.OldTheme
-            else -> R.style.MainTheme
-        })
+        setTheme(
+            when (sp.getInt(APP_PREFERENCE_THEME, 0)) {
+                1 -> R.style.OldTheme
+                else -> R.style.MainTheme
+            }
+        )
         binding.navView.inflateHeaderView(R.layout.nav_header)
         if (Firebase.auth.currentUser == null) startActivity(Intent(this, LoginSucces::class.java))
         setContentView(binding.root)
@@ -73,10 +77,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .into(navigationDrawer.findViewById(R.id.account_photo))
             }
         toggle.syncState()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, mListFragment, null).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragmentContainerView, mListFragment)
+            .add(R.id.fragmentContainerView, mProfileFragment).hide(mProfileFragment).commit()
         findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
         invalidateOptionsMenu()
+    }
+
+    private fun setFragment(fragmentInt: Int) {
+        val hide = if (fragmentInt == 2) mListFragment else mProfileFragment
+        val show = if (fragmentInt == 2) mProfileFragment else mListFragment
+        supportFragmentManager.beginTransaction().show(show).hide(hide).commit()
+//        if(fragmentInt==1)
+//            mListFragment.iti()
     }
 
     private var doubleBackToExitPressedOnce = false
@@ -84,17 +96,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
-        } else if (onFragment == (2).toShort()) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, mListFragment, null).commit()
-            onFragment = 1
-            findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
+        } else if (profileFragmentActive) {
+            supportFragmentManager.beginTransaction().hide(mProfileFragment).commit()
+            binding.navView.setCheckedItem(R.id.nav_home)
             return
         } else if (doubleBackToExitPressedOnce) {
             finish()
             return
         }
-
         this.doubleBackToExitPressedOnce = true
         Toast.makeText(this, "Нажмите еще раз для выхода", Toast.LENGTH_SHORT).show()
         Handler(Looper.getMainLooper()).postDelayed({
@@ -104,10 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        if (onFragment == (2).toShort()) {
-            menu?.findItem(R.id.replaceList)?.isVisible = false
-        } else if (onFragment == (1).toShort())
-            menu?.findItem(R.id.replaceList)?.isVisible = true
+        menu?.findItem(R.id.replaceList)?.isVisible = !profileFragmentActive
         return true
     }
 
@@ -118,34 +124,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onResume() {
-        super.onResume()
-        when(onFragment){
-            (1).toShort()-> findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_home)
-            (2).toShort()-> findViewById<NavigationView>(R.id.nav_view).setCheckedItem(R.id.nav_profile)
-        }
-
-    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home ->
-                if (onFragment != (1).toShort()) {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, mListFragment, null).commit()
-                    onFragment = 1
-                    invalidateOptionsMenu()
-                }
+            R.id.nav_home -> {
+                supportFragmentManager.beginTransaction().hide(mProfileFragment).commit()
+            }
             R.id.nav_chats -> {
-                overridePendingTransition(android.R.anim.fade_out,android.R.anim.fade_in)
+                overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in)
                 startActivity(Intent(this, AddBlogActivity::class.java))
             }
             R.id.nav_profile -> {
-                if (onFragment != (2).toShort()){
-                    findViewById<RecyclerView>(R.id.list).adapter = null
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, ProfileFragment(), null).commit()}
-                onFragment = 2
-                invalidateOptionsMenu()
+                profileFragmentActive = true
+                supportFragmentManager.beginTransaction()
+                    .show(mProfileFragment).commit()
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="start"
     android:layout_marginHorizontal="5dp"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    tools:theme="@style/MainTheme"
     android:background="?firstColor"
     android:elevation="3dp"
-    android:gravity="start">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="start"
+    tools:theme="@style/MainTheme">
 
     <LinearLayout
         android:id="@+id/blogInfo"
@@ -65,83 +66,84 @@
             tools:text="2021/06/15 16:06" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/userInfo"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/blogInfo"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userPhoto"
             android:layout_width="50sp"
             android:layout_height="50sp"
+            android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/userText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/userPhoto"
             android:layout_marginStart="6dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="5dp"
-            android:layout_weight="1"
+            android:layout_toStartOf="@+id/like_amount_in_list"
+            android:layout_toEndOf="@id/userPhoto"
             android:ellipsize="end"
+            android:lines="1"
             android:maxLines="1"
             android:minLines="1"
             android:textColor="#ebebeb"
             android:textSize="18sp"
             tools:text="User" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/like_amount_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userInfo"
-        android:layout_alignTop="@id/comments_button_in_list"
-        android:layout_alignBottom="@id/like_button_in_list"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@id/like_button_in_list"
-        android:gravity="center_vertical"
-        android:textColor="#353535"
-        tools:text="42" />
+        <TextView
+            android:id="@+id/like_amount_in_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/comments_button_in_list"
+            android:layout_alignBottom="@id/like_button_in_list"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/like_button_in_list"
+            android:gravity="center_vertical"
+            android:textColor="#353535"
+            tools:text="42" />
 
-    <ImageButton
-        android:id="@+id/like_button_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userInfo"
-        android:layout_marginVertical="3dp"
-        android:layout_marginEnd="18dp"
-        android:layout_toStartOf="@id/comments_amount_in_list"
-        android:background="@drawable/like_selector" />
+        <ImageButton
+            android:id="@+id/like_button_in_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/userPhoto"
+            android:layout_marginVertical="3dp"
+            android:layout_marginEnd="18dp"
+            android:layout_toStartOf="@id/comments_amount_in_list"
+            android:background="@drawable/like_selector" />
 
-    <TextView
-        android:textColor="#353535"
-        android:id="@+id/comments_amount_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userInfo"
-        android:layout_alignTop="@id/comments_button_in_list"
-        android:layout_alignBottom="@id/like_button_in_list"
-        android:layout_marginVertical="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_toStartOf="@id/comments_button_in_list"
-        android:gravity="center_vertical"
-        tools:text="9" />
+        <TextView
+            android:id="@+id/comments_amount_in_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/comments_button_in_list"
+            android:layout_alignBottom="@id/like_button_in_list"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@id/comments_button_in_list"
+            android:gravity="center_vertical"
+            android:textColor="#353535"
+            tools:text="9" />
 
-    <ImageButton
-        android:id="@+id/comments_button_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userInfo"
-        android:layout_alignParentEnd="true"
-        android:layout_marginVertical="3dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/comment_image" />
+        <ImageButton
+            android:id="@+id/comments_button_in_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/userPhoto"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="3dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/comment_image" />
+    </RelativeLayout>
 </RelativeLayout>

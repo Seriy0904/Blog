@@ -26,7 +26,8 @@
             android:layout_gravity="end"
             android:background="@drawable/edit_icon"
             android:contentDescription="@string/save_changes_in_profile"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_photo_profile"
@@ -55,13 +56,32 @@
 
     <Spinner
         android:id="@+id/themes_spinner"
-        android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/user_info_in_profile"
+        android:layout_marginTop="6dp"
         android:entries="@array/themes"
         android:padding="10dp"
         android:theme="@style/spinner" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/themes_spinner"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/my_blogs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/themes_spinner"
+        android:layout_marginTop="1dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:text="Мои блоги"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/exit_account"

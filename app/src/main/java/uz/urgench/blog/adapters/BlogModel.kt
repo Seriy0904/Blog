@@ -8,4 +8,5 @@ data class BlogModel(
     val user: String,
     val date: Timestamp,
     val uri: String?,
+    val uriList:ArrayList<String> = arrayListOf()
 )
