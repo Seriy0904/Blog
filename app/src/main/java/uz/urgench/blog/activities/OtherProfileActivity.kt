@@ -1,6 +1,7 @@
 package uz.urgench.blog.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
@@ -10,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import uz.urgench.blog.adapters.BlogListAdapter
 import uz.urgench.blog.R
+import uz.urgench.blog.adapters.BlogListAdapter
 import uz.urgench.blog.adapters.BlogModel
-import java.sql.Timestamp
 import java.util.*
+import kotlin.collections.ArrayList
 
 class OtherProfileActivity : AppCompatActivity() {
     private val blogList = arrayListOf<BlogModel>()
@@ -45,6 +48,19 @@ class OtherProfileActivity : AppCompatActivity() {
         userBlogsList.adapter = userBlogListAdapter
         updateList()
         swipeLayout.setOnRefreshListener { updateList() }
+        subscribeButton.setOnClickListener {
+            if (subscribers.contains(Firebase.auth.currentUser?.email)){
+                subscribers.remove(Firebase.auth.currentUser?.email)
+                subscribeButton.setTextColor(getColor(R.color.red))
+                subscribeButton.text = "ПОДПИСАТЬСЯ"}
+            else{
+                subscribers.add(Firebase.auth.currentUser?.email?:"")
+                subscribeButton.setTextColor(getColor(R.color.grey))
+                subscribeButton.text = "ВЫ ПОДПИСАНЫ"
+            }
+            Firebase.firestore.collection("Accounts").document(selectedUser).update(mapOf("SubscribersList" to subscribers))
+            updateList()
+        }
     }
 
     private fun updateList() {
@@ -64,8 +80,27 @@ class OtherProfileActivity : AppCompatActivity() {
                     )
                 }
                 userBlogListAdapter.setList(blogList)
-                swipeLayout.isRefreshing = false
-                progress.visibility = View.INVISIBLE
             }
+        Firebase.firestore.collection("Accounts").get().addOnSuccessListener {
+            for (userInfo in it) {
+                if (userInfo.id == selectedUser) {
+                    subscribers.clear()
+                    subscribers.addAll(userInfo["SubscribersList"] as ArrayList<String>)
+                    userName.text = userInfo.getString("CustomName")
+                    Glide.with(userPhoto).load(userInfo.getString("CustomPhoto")).into(userPhoto)
+                }
+            }
+            progress.visibility = View.INVISIBLE
+            swipeLayout.isRefreshing = false
+            Log.d("MyTag", subscribers.toString())
+            Log.d("MyTag","${Firebase.auth.currentUser?.email}")
+            if (subscribers.contains(Firebase.auth.currentUser?.email)) {
+                subscribeButton.setTextColor(getColor(R.color.grey))
+                subscribeButton.text = "ВЫ ПОДПИСАНЫ"
+            } else {
+                subscribeButton.setTextColor(getColor(R.color.red))
+                subscribeButton.text = "ПОДПИСАТЬСЯ"
+            }
+        }
     }
 }
